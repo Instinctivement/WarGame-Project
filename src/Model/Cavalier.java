@@ -3,14 +3,19 @@ package Model;
 public class Cavalier extends Unite {
     private int id;
     
-    public Cavalier(Arme[] armes, int id) {
-        super(6, 5, 3, 25, 8, 5, armes);
+    public Cavalier(User user, int id) {
+        super(6, 5, 3, 25, 8, 5, user);
         this.id = id;
     }
     
     @Override
-    public void attaquer() {
-        // Logique spécifique à l'attaque du cavalier
+    public void attaquer(Unite unite) {
+        int totalAttque = this.nbAttaque + this.arme.getPotentiel_attaque();
+        int resultatAttaque = totalAttque - unite.getNbDefense();
+        if (resultatAttaque > 0) {
+            int pvRestants = unite.getNbPv() - resultatAttaque;
+            unite.setNbPv(pvRestants);
+        }
     }
     
     @Override

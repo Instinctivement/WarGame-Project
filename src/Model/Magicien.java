@@ -3,14 +3,19 @@ package Model;
 public class Magicien extends Unite {
     private int id;
     
-    public Magicien(Arme[] armes, int id) {
-        super(2, 3, 7, 15, 6, 25, armes);
+    public Magicien(User user, int id) {
+        super(2, 3, 7, 15, 6, 25, user);
         this.id = id;
     }
     
     @Override
-    public void attaquer() {
-        // Logique spécifique à l'attaque du magicien
+    public void attaquer(Unite unite) {
+        int totalAttque = this.nbAttaque + this.arme.getPotentiel_attaque();
+        int resultatAttaque = totalAttque - unite.getNbDefense();
+        if (resultatAttaque > 0) {
+            int pvRestants = unite.getNbPv() - resultatAttaque;
+            unite.setNbPv(pvRestants);
+        }
     }
     
     @Override

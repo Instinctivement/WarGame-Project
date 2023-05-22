@@ -1,26 +1,12 @@
 package Model;
 
-/**
- *
- * @author franc
- */
 public class Arme {
-    private int id;
     private String nom;
     private int potentielAttaque;
     
-    public Arme(int id, String nom, int potentiel_attaque) {
-        this.id = id;
-        this.nom = nom;
-        this.potentielAttaque = potentiel_attaque;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Arme() {
+        this.nom = "Excalibur";
+        this.potentielAttaque = 2;
     }
 
     public String getNom() {

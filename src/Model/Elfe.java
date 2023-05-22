@@ -3,14 +3,19 @@ package Model;
 public class Elfe extends Unite {
     private int id;
     
-    public Elfe(Arme[] armes, int id) {
-        super(4, 8, 4, 25, 9, 10, armes);
+    public Elfe(User user, int id) {
+        super(4, 8, 4, 25, 9, 10, user);
         this.id = id;
     }
     
     @Override
-    public void attaquer() {
-        // Logique spécifique à l'attaque de l'elfe
+    public void attaquer(Unite unite) {
+        int totalAttque = this.nbAttaque + this.arme.getPotentiel_attaque();
+        int resultatAttaque = totalAttque - unite.getNbDefense();
+        if (resultatAttaque > 0) {
+            int pvRestants = unite.getNbPv() - resultatAttaque;
+            unite.setNbPv(pvRestants);
+        }
     }
     
     @Override

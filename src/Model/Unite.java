@@ -1,25 +1,91 @@
 package Model;
 
 public abstract class Unite {
-    protected int nb_deplacement;
-    protected int nb_attaque;
-    protected int nb_defense;
-    protected int nb_pv;
-    protected int nb_vision;
-    protected double taux_recuperation;
-    protected Arme[] armes;
+    protected int nbDeplacement;
+    protected int nbAttaque;
+    protected int nbDefense;
+    protected int nbPv;
+    protected int nbVision;
+    protected double tauxRecuperation;
+    protected Arme arme;
+    protected User user;
     
-    public Unite(int nb_deplacement, int nb_attaque, int nb_defense, int nb_pv, int nb_vision, double taux_recuperation, Arme[] armes) {
-        this.nb_deplacement = nb_deplacement;
-        this.nb_attaque = nb_attaque;
-        this.nb_defense = nb_defense;
-        this.nb_pv = nb_pv;
-        this.nb_vision = nb_vision;
-        this.taux_recuperation = taux_recuperation;
-        this.armes = armes;
+    public Unite(int nbDeplacement, int nbAttaque, int nbDefense, int nbPv, int nbVision, double tauxRecuperation, User user) {
+        this.nbDeplacement = nbDeplacement;
+        this.nbAttaque = nbAttaque;
+        this.nbDefense = nbDefense;
+        this.nbPv = nbPv;
+        this.nbVision = nbVision;
+        this.tauxRecuperation = tauxRecuperation;
+        this.arme = new Arme();
+        this.user = user;
+    }
+
+    public int getNbDeplacement() {
+        return nbDeplacement;
+    }
+
+    public void setNbDeplacement(int nbDeplacement) {
+        this.nbDeplacement = nbDeplacement;
+    }
+
+    public int getNbAttaque() {
+        return nbAttaque;
+    }
+
+    public void setNbAttaque(int nbAttaque) {
+        this.nbAttaque = nbAttaque;
+    }
+
+    public int getNbDefense() {
+        return nbDefense;
+    }
+
+    public void setNbDefense(int nbDefense) {
+        this.nbDefense = nbDefense;
+    }
+
+    public int getNbPv() {
+        return nbPv;
+    }
+
+    public void setNbPv(int nbPv) {
+        this.nbPv = nbPv;
+    }
+
+    public int getNbVision() {
+        return nbVision;
+    }
+
+    public void setNbVision(int nbVision) {
+        this.nbVision = nbVision;
+    }
+
+    public double getTauxRecuperation() {
+        return tauxRecuperation;
+    }
+
+    public void setTauxRecuperation(double tauxRecuperation) {
+        this.tauxRecuperation = tauxRecuperation;
+    }
+
+    public Arme getArme() {
+        return arme;
+    }
+
+    public void setArme(Arme arme) {
+        this.arme = arme;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     
-    public abstract void attaquer();
+    public abstract void attaquer(Unite unite);
     
     public abstract void deplacer();
     

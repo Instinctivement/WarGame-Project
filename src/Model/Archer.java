@@ -3,14 +3,19 @@ package Model;
 public class Archer extends Unite {
     private int id;
     
-    public Archer(Arme[] armes, int id) {
-        super(2, 7, 2, 20, 10, 5, armes);
+    public Archer(User user, int id) {
+        super(2, 7, 2, 20, 10, 5, user);
         this.id = id;
     }
     
     @Override
-    public void attaquer() {
-        // Logique spécifique à l'attaque de l'archer
+    public void attaquer(Unite unite) {
+        int totalAttque = this.nbAttaque + this.arme.getPotentiel_attaque();
+        int resultatAttaque = totalAttque - unite.getNbDefense();
+        if (resultatAttaque > 0) {
+            int pvRestants = unite.getNbPv() - resultatAttaque;
+            unite.setNbPv(pvRestants);
+        }
     }
     
     @Override
