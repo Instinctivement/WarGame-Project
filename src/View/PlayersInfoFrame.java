@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
 
 import App.Main;
+import Model.User;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author franc
- */
 public class PlayersInfoFrame extends javax.swing.JFrame {
 
     /**
@@ -201,7 +194,10 @@ public class PlayersInfoFrame extends javax.swing.JFrame {
         }else if(txtUser2.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Merci de renseigner un pseudo pour le joueur2");
         }else{
-            PlateauFrame pf = new PlateauFrame();
+            User user1 = new User(1, txtUser1.getText());
+            User user2 = new User(2, txtUser2.getText());
+            
+            PlateauFrame pf = new PlateauFrame(user1, user2);
             pf.setVisible(true);
             this.setVisible(false);
         }

@@ -32,7 +32,7 @@ public class PlateauHexagone extends JPanel {
 
     public PlateauHexagone() {
         try {
-            bgImage = ImageIO.read(new File("finalwargame.png"));
+            bgImage = ImageIO.read(new File("img/finalwargame.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
