@@ -52,12 +52,11 @@ public class Hexagonegraph {
     public Terrain getTerrain1() {
         return terrain;
     }
+    
     public void setTerrain(Terrain newTerrain) {
         this.terrain = newTerrain;
     }
     
-    
-
     public void dessiner(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         Stroke oldStroke = g2d.getStroke(); // Sauvegarder le trait précédent

@@ -22,7 +22,7 @@ public class PlateauHexagone extends JPanel {
     private static final int HEIGHT = 11;
     private int imageWidth = 866; // Largeur de l'image
     private int imageHeight = 680; // Hauteur de l'image
-    int startX = 2; // Dimension de départ en x
+    int startX = 1; // Dimension de départ en x
     int startY = 1; // Dimension de départ en y
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
@@ -57,7 +57,16 @@ public class PlateauHexagone extends JPanel {
                             Timer timer = new Timer(300, new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    h.setBorderColor(Color.YELLOW);
+                                    // Get the last mouse location from the MouseInfo
+                                    Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+                                    SwingUtilities.convertPointFromScreen(mouseLocation, getParent());
+
+                                    if (h.getPolygon().contains(mouseLocation)) {//on verifie si la souris est toujours dans l'hexagone
+                                        h.setBorderColor(Color.YELLOW);//c'est du detail visuel
+                                    } else {
+                                        h.setBorderColor(Color.BLACK);
+                                    }
+
                                     repaint();
                                 }
                             });
@@ -101,17 +110,17 @@ public class PlateauHexagone extends JPanel {
         super.paintComponent(g);
 
         if (bgImage != null) {
-            int x = 103; // Coordonnée x souhaitée
-            int y = 80;  // Coordonnée y souhaitée
+            int x = 0; // Coordonnée x souhaitée
+            int y = 0;  // Coordonnée y souhaitée
             g.drawImage(bgImage, x, y, imageWidth, imageHeight, this);
         }
 
         for (int i = startX; i < startX + WIDTH; i++) {
             for (int j = startY; j < startY + HEIGHT; j++) {
-                int offsetX = startX * RADIUS * (int) (Math.sqrt(3) / 2);
-                int offsetY = startY * RADIUS * 3 / 2;
-                int x = offsetX + (int) (i * RADIUS * Math.sqrt(3));
-                int y = offsetY + (int) (j * RADIUS * 1.5);
+                int offsetX = startX * RADIUS;
+                int offsetY = startY * RADIUS / 2;
+                int x = (int) (i * RADIUS * Math.sqrt(3)) + 5 - offsetX;
+                int y = (int) (j * RADIUS * 1.5) - offsetY;
                 if (j % 2 != 0) {
                     x += (int) (RADIUS * Math.sqrt(3) / 2);
                 }
@@ -120,44 +129,44 @@ public class PlateauHexagone extends JPanel {
                 }
 
                 //i=colonnes j=lignes 
-                if (i == 4 && j == 2
+                if (i == 3 && j == 2
                         || // Montagne 
-                        i >= 3 && i <= 4 && j == 3
-                        || i == 10 && j == 11
-                        || i >= 10 && i <= 11 && j == 10
-                        || i >= 10 && i <= 11 && j == 9) {
+                        i >= 2 && i <= 4 && j == 3
+                        || i == 9 && j == 11
+                        || i >= 9 && i <= 10 && j == 10
+                        || i >= 9 && i <= 10 && j == 9) {
                     hexagones[i - startX][j - startY].setTerrain(new Montagne());
                 }
-                if (i >= 2 && i <= 5 && j == 4
+                if (i >= 1 && i <= 4 && j == 4
                         || //Riviere
-                        i >= 5 && i <= 8 && j == 5
-                        || i >= 10 && i <= 13 && j == 8
-                        || i == 9 && j == 7
-                        || i == 9 && j == 6) {
+                        i >= 4 && i <= 7 && j == 5
+                        || i >= 9 && i <= 12 && j == 8
+                        || i == 8 && j == 7
+                        || i == 8 && j == 6) {
                     hexagones[i - startX][j - startY].setTerrain(new Riviere());
                 }
-                if (i >= 5 && i <= 8 && j == 6
+                if (i >= 4 && i <= 7 && j == 6
                         || //Foret
-                        i >= 8 && i <= 10 && j == 4
-                        || i >= 7 && i <= 8 && j == 3
-                        || i >= 9 && i <= 10 && j == 5
-                        || i == 5 && j == 7
-                        || i == 7 && j == 7
-                        || i == 8 && j == 8) {
+                        i >= 7 && i <= 9 && j == 4
+                        || i >= 6 && i <= 7 && j == 3
+                        || i >= 8 && i <= 9 && j == 5
+                        || i == 4 && j == 7
+                        || i == 6 && j == 7
+                        || i == 7 && j == 8) {
                     hexagones[i - startX][j - startY].setTerrain(new Foret());
                 }
-                if (i >= 2 && i <= 7 && j == 1
+                if (i >= 1 && i <= 6 && j == 1
                         || //Neige
-                        i >= 2 && i <= 3 && j == 2
-                        || i >= 5 && i <= 7 && j == 2
-                        || i >= 5 && i <= 6 && j == 3
-                        || i == 2 && j == 3
-                        || i >= 8 && i <= 9 && j == 9
-                        || i >= 12 && i <= 13 && j == 9
-                        || i >= 8 && i <= 9 && j == 10
-                        || i >= 12 && i <= 13 && j == 10
-                        || i >= 7 && i <= 9 && j == 11
-                        || i >= 11 && i <= 13 && j == 11) {
+                        i >= 1 && i <= 2 && j == 2
+                        || i >= 4 && i <= 6 && j == 2
+                        || i >= 4 && i <= 5 && j == 3
+                        || i == 1 && j == 3
+                        || i >= 7 && i <= 8 && j == 9
+                        || i >= 11 && i <= 12 && j == 9
+                        || i >= 7 && i <= 8 && j == 10
+                        || i >= 11 && i <= 12 && j == 10
+                        || i >= 6 && i <= 8 && j == 11
+                        || i >= 10 && i <= 12 && j == 11) {
                     hexagones[i - startX][j - startY].setTerrain(new Glace());
                 }
 
