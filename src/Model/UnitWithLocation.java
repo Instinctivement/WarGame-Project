@@ -26,8 +26,19 @@ public class UnitWithLocation {
     public int getCenterY() {
         return centerY;
     }
+    public void setCenterX(int centerX) {
+        this.centerX = centerX;
+    }
+
+    public void setCenterY(int centerY) {
+        this.centerY = centerY;
+    }
     
     public Hexagonegraph getHexagone() {
         return hexagone;
     }
+    public void setHexagone(Hexagonegraph hexagone) {
+    this.hexagone = hexagone;
+}
+
 }

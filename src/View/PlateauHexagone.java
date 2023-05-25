@@ -48,6 +48,9 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
     private Image elfe2;
     private Image magicien2;
 
+    private UnitWithLocation selectedUnit;
+
+
     private volatile Unite currentUnit;
 
     public void setCurrentUnit(Unite unit) {
@@ -64,6 +67,27 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
             this.unitLocations.add(new UnitWithLocation(unit, centerX, centerY, hexagone));
         }
     }
+    
+   public void Selectionner_bouger(UnitWithLocation unitAtHexagone, int centerX, int centerY, Hexagonegraph h) {
+    if (selectedUnit == null && unitAtHexagone != null) {
+        // Select the unit at this hexagon
+        selectedUnit = unitAtHexagone;
+        
+    } else if (selectedUnit != null) {
+        
+        UnitWithLocation unitAtDestination = Position_unite(h);
+        if (unitAtDestination == null) {
+        // Move the selected unit to this hexagon
+        unitLocations.remove(selectedUnit); // remove the old location from the list
+        selectedUnit.setCenterX(centerX);
+        selectedUnit.setCenterY(centerY);
+        selectedUnit.setHexagone(h);
+        unitLocations.add(selectedUnit); // add the updated location to the list
+        selectedUnit = null;  // Deselect the unit after moving
+        }
+    }
+}
+    
 
     public boolean checkUnitInHexagone(Hexagonegraph hexagone) {
         for (UnitWithLocation unitLocation : unitLocations) {
@@ -73,6 +97,16 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
         }
         return false; // retourne false si aucune unité n'existe dans cet hexagone
     }
+    
+    public UnitWithLocation Position_unite(Hexagonegraph hexagone) {
+    for (UnitWithLocation unitLocation : unitLocations) {
+        if (unitLocation.getHexagone().equals(hexagone)) {
+            return unitLocation;
+        }
+    }
+    return null;
+    }
+
 
     public PlateauHexagone() {
         try {
@@ -117,7 +151,7 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
                             // Calculate the center coordinates of the clicked hexagon
                             centerX = h.getX() + (RADIUS / 2);
                             centerY = h.getY() + (RADIUS / 2);
-                            addUnit(currentUnit, centerX, centerY, h);
+                            
                             System.out.println("Center coordinates of the clicked hexagon: (" + centerX + ", " + centerY + ")");
 
                             h.setBorderColor(Color.red);
@@ -125,8 +159,18 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
                             System.out.println("Hexagone cliqué à la position matricielle (x, y) : (" + h.getMatrixX() + ", " + h.getMatrixY() + ")");
                             System.out.println(terrain.getClass().getSimpleName());
 
-                            addUnit(currentUnit, centerX, centerY, h);
-
+                            
+                            UnitWithLocation unitAtHexagone = Position_unite(h);
+                            if (selectedUnit == null && unitAtHexagone == null && currentUnit != null) {
+                                addUnit(currentUnit, centerX, centerY, h);
+                            }
+                           
+                            
+                            //L'appel de la fonction
+                            Selectionner_bouger(unitAtHexagone, centerX, centerY, h);
+                            
+                            
+                            
                             repaint();  // Mettre à jour le dessin du plateau
                             setCurrentUnit(null);
 

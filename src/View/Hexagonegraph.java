@@ -2,8 +2,10 @@ package View;
 
 import Model.Terrain;
 import java.awt.*;
+import java.util.Objects;
 
 public class Hexagonegraph {
+
     private int x;
     private int y;
     private int radius;
@@ -43,20 +45,19 @@ public class Hexagonegraph {
         int x = this.y % 2 == 0 ? this.x : this.x - (int) (radius * Math.sqrt(3) / 2);
         return (x - (startX - 1) * radius * (int) (Math.sqrt(3) / 2)) / (int) (radius * Math.sqrt(3));
     }
-    
+
     public int getMatrixY() {
         return (this.y - (startY - 1) * radius * 3 / 2) / (int) (radius * 1.5);
     }
-    
 
     public Terrain getTerrain1() {
         return terrain;
     }
-    
+
     public void setTerrain(Terrain newTerrain) {
         this.terrain = newTerrain;
     }
-    
+
     public void dessiner(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         Stroke oldStroke = g2d.getStroke(); // Sauvegarder le trait précédent
@@ -79,11 +80,28 @@ public class Hexagonegraph {
     }
 
     public void setFillColor(Color fillColor) {
-        this.fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(),64);
+        this.fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), 64);
     }
 
     public void setBorderColor(Color borderColor) {
         this.borderColor = borderColor;
     }
-    
+
+    public int hashCode() {
+        return Objects.hash(x, y, radius);
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Hexagonegraph that = (Hexagonegraph) o;
+        return x == that.x
+                && y == that.y
+                && radius == that.radius;
+    }
+
 }
