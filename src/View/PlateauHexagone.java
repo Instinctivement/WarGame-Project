@@ -14,8 +14,11 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.File;
 import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.util.List;
+import java.util.ArrayList;
 
-public class PlateauHexagone extends JPanel {
+public class PlateauHexagone extends JPanel implements ImageObserver {
 
     private static final int RADIUS = 40;
     private static final int WIDTH = 12;
@@ -24,15 +27,54 @@ public class PlateauHexagone extends JPanel {
     private int imageHeight = 680; // Hauteur de l'image
     int startX = 1; // Dimension de départ en x
     int startY = 1; // Dimension de départ en y
+    int centerX = 0;
+    int centerY = 0;
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private Hexagonegraph highlightedHexagone = null;
+    private List<UnitWithLocation> unitLocations = new ArrayList<>();
 
     private Image bgImage;
+    private Image arch;
+    private Image soldat;
+    private Image cavalier;
+    private Image elfe;
+    private Image magicien;
+
+    private volatile Unite currentUnit;
+
+    public void setCurrentUnit(Unite unit) {
+        this.currentUnit = unit;
+    }
+
+    public Unite getCurrentUnit() {
+        return currentUnit;
+    }
+    
+
+    public void addUnit(Unite unit, int centerX, int centerY, Hexagonegraph hexagone) {
+        if (!checkUnitInHexagone(hexagone)) {
+            this.unitLocations.add(new UnitWithLocation(unit, centerX, centerY, hexagone));
+        }
+    }
+
+    public boolean checkUnitInHexagone(Hexagonegraph hexagone) {
+        for (UnitWithLocation unitLocation : unitLocations) {
+            if (unitLocation.getHexagone().equals(hexagone)) {
+                return true; // retourne true si une unité existe dans cet hexagone
+            }
+        }
+        return false; // retourne false si aucune unité n'existe dans cet hexagone
+    }
 
     public PlateauHexagone() {
         try {
             bgImage = ImageIO.read(new File("img/finalwargame.png"));
+            arch = ImageIO.read(new File("img/ArcherB.png"));
+            soldat = ImageIO.read(new File("img/SoldatB.png"));
+            cavalier = ImageIO.read(new File("img/CavalierB.png"));
+            elfe = ImageIO.read(new File("img/ElfeB.png"));
+            magicien = ImageIO.read(new File("img/MagicienB.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,14 +87,34 @@ public class PlateauHexagone extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                int clickX = e.getX();
+                int clickY = e.getY();
+                System.out.println("mmouse clicked: " + clickX + "  " + clickY);
+
+                // Check if the click coordinates are within the bounds of the arch image
+                if (clickX >= 600 && clickX <= 630 && clickY >= 100 && clickY <= 175) {
+                    System.out.println("Clicked on the arch image");
+                }
                 for (int i = 0; i < WIDTH; i++) {
                     for (int j = 0; j < HEIGHT; j++) {
                         Hexagonegraph h = hexagones[i][j];
                         if (h.getPolygon().contains(e.getPoint())) {
+                            // Calculate the center coordinates of the clicked hexagon
+                            // Calculate the center coordinates of the clicked hexagon
+                            centerX = h.getX() + (RADIUS / 2);
+                            centerY = h.getY() + (RADIUS / 2);
+                            addUnit(currentUnit, centerX, centerY, h);
+                            System.out.println("Center coordinates of the clicked hexagon: (" + centerX + ", " + centerY + ")");
+
                             h.setBorderColor(Color.red);
                             Terrain terrain = h.getTerrain1();
                             System.out.println("Hexagone cliqué à la position matricielle (x, y) : (" + h.getMatrixX() + ", " + h.getMatrixY() + ")");
                             System.out.println(terrain.getClass().getSimpleName());
+
+                            addUnit(currentUnit, centerX, centerY, h);
+
+                            repaint();  // Mettre à jour le dessin du plateau
+                            setCurrentUnit(null);
 
                             Timer timer = new Timer(300, new ActionListener() {
                                 @Override
@@ -105,7 +167,6 @@ public class PlateauHexagone extends JPanel {
 
     }
 
-    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -172,7 +233,21 @@ public class PlateauHexagone extends JPanel {
 
                 hexagones[i - startX][j - startY].dessiner(g);
             }
-        }
 
+        }
+        for (UnitWithLocation u : unitLocations) {
+            if (u.getUnit() instanceof Archer) {
+                g.drawImage(arch, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+
+            } else if (u.getUnit() instanceof Soldat) {
+                g.drawImage(soldat, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Cavalier) {
+                g.drawImage(cavalier, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Elfe) {
+                g.drawImage(elfe, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Magicien) {
+                g.drawImage(magicien, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            }
+        }
     }
 }

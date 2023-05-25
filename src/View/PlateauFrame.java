@@ -2,16 +2,18 @@ package View;
 
 import Model.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
+import java.util.List;
+import java.util.ArrayList;
 
-/**
- *
- * @author franc
- */
 public class PlateauFrame extends javax.swing.JFrame {
-    
+
     User user1;
     User user2;
+    private List<Unite> placedUnits = new ArrayList<>();
+
     /**
      * Creates new form PlateauFrame
      */
@@ -19,61 +21,64 @@ public class PlateauFrame extends javax.swing.JFrame {
         initComponents();
         this.user1 = user1;
         this.user2 = user2;
-        
+
         initParam();
-        
-        initUnit( this.user1);
+
+        initUnit(this.user1);
+
     }
-    
+
     public void initParam() {
         lbUser1.setText(this.user1.getName());
         lbUser2.setText(this.user2.getName());
     }
-    
+
     public void initUnit(User user) {
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(200, 100));
         panel.setLayout(new GridLayout(1, 5));
 
-        Unite[][] unites = new Unite[1][5];
-        ImageClickable[][] imageClickables = new ImageClickable[1][5];
+        Unite[] unites = new Unite[5];
+        ImageClickable[] imageClickables = new ImageClickable[5];
 
         // Création des instances des différents types d'unités
-        Archer archer = new Archer(user, 1);
-        Soldat soldat = new Soldat(user, 2);
-        Elfe elfe = new Elfe(user, 3);
-        Cavalier cavalier = new Cavalier(user, 4);
-        Magicien magicien = new Magicien(user, 5);
+        unites[0] = new Archer(user, 1);
+        unites[1] = new Soldat(user, 2);
+        unites[2] = new Elfe(user, 3);
+        unites[3] = new Cavalier(user, 4);
+        unites[4] = new Magicien(user, 5);
 
         // Création des instances correspondantes d'ImageClickable
-        ArcherImageClickable archerClickable = new ArcherImageClickable(archer, new ImageIcon("img/ArcherB.png"));
-        SoldatImageClickable soldatClickable = new SoldatImageClickable(soldat, new ImageIcon("img/SoldatB.png"));
-        ElfeImageClickable elfeClickable = new ElfeImageClickable(elfe, new ImageIcon("img/ElfeB.png"));
-        CavalierImageClickable cavalierClickable = new CavalierImageClickable(cavalier, new ImageIcon("img/CavalierB.png"));
-        MagicienImageClickable magicienClickable = new MagicienImageClickable(magicien, new ImageIcon("img/MagicienB.png"));
+        imageClickables[0] = new ArcherImageClickable((Archer) unites[0], new ImageIcon("img/ArcherB.png"));
+        imageClickables[1] = new SoldatImageClickable((Soldat) unites[1], new ImageIcon("img/SoldatB.png"));
+        imageClickables[2] = new ElfeImageClickable((Elfe) unites[2], new ImageIcon("img/ElfeB.png"));
+        imageClickables[3] = new CavalierImageClickable((Cavalier) unites[3], new ImageIcon("img/CavalierB.png"));
+        imageClickables[4] = new MagicienImageClickable((Magicien) unites[4], new ImageIcon("img/MagicienB.png"));
+
+        // Ajout des MouseListeners aux ImageClickable
+        for (int i = 0; i < imageClickables.length; i++) {
+            final int index = i;
+                imageClickables[i].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(plateauHexagone1.getCurrentUnit() == null ){
+                            plateauHexagone1.setCurrentUnit(unites[index]);
+                            imageClickables[index].setVisible(false);
+                        }
+                    }
+                });
+        }
 
         // Ajout des ImageClickable au JPanel
-        panel.add(archerClickable);
-        panel.add(soldatClickable);
-        panel.add(elfeClickable);
-        panel.add(cavalierClickable);
-        panel.add(magicienClickable);
+        for (ImageClickable imageClickable : imageClickables) {
+            panel.add(imageClickable);
+        }
 
         // Ajout des Unite correspondants aux tableaux
-        unites[0][0] = archer;
-        unites[0][1] = soldat;
-        unites[0][2] = elfe;
-        unites[0][3] = cavalier;
-        unites[0][4] = magicien;
+        Unite[][] unitesArray = {unites};
+        ImageClickable[][] imageClickablesArray = {imageClickables};
 
-        imageClickables[0][0] = archerClickable;
-        imageClickables[0][1] = soldatClickable;
-        imageClickables[0][2] = elfeClickable;
-        imageClickables[0][3] = cavalierClickable;
-        imageClickables[0][4] = magicienClickable;
-        
-        panelUnite.add(panel, BorderLayout.CENTER);
-
+        panelUniteB.add(panel, BorderLayout.CENTER);
     }
 
     /**
@@ -100,7 +105,8 @@ public class PlateauFrame extends javax.swing.JFrame {
         lbNbTour = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
-        panelUnite = new javax.swing.JPanel();
+        panelUniteB = new javax.swing.JPanel();
+        panelUniteR = new javax.swing.JPanel();
         plateauHexagone1 = new View.PlateauHexagone();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -188,7 +194,7 @@ public class PlateauFrame extends javax.swing.JFrame {
                 .addComponent(jSeparator2)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(43, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,9 +206,10 @@ public class PlateauFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelUniteR, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelUnite, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                    .addComponent(panelUniteB, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,9 +234,11 @@ public class PlateauFrame extends javax.swing.JFrame {
                     .addComponent(lbUser2))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(panelUnite, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelUniteB, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelUniteR, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -262,7 +271,7 @@ public class PlateauFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -279,7 +288,8 @@ public class PlateauFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lbNbTour;
     private javax.swing.JLabel lbUser1;
     private javax.swing.JLabel lbUser2;
-    private javax.swing.JPanel panelUnite;
+    private javax.swing.JPanel panelUniteB;
+    private javax.swing.JPanel panelUniteR;
     private View.PlateauHexagone plateauHexagone1;
     // End of variables declaration//GEN-END:variables
 }
