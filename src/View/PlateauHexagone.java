@@ -35,11 +35,18 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
 
     private Image bgImage;
-    private Image arch;
-    private Image soldat;
-    private Image cavalier;
-    private Image elfe;
-    private Image magicien;
+    
+    private Image archer1;
+    private Image soldat1;
+    private Image cavalier1;
+    private Image elfe1;
+    private Image magicien1;
+    
+    private Image archer2;
+    private Image soldat2;
+    private Image cavalier2;
+    private Image elfe2;
+    private Image magicien2;
 
     private volatile Unite currentUnit;
 
@@ -70,11 +77,18 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
     public PlateauHexagone() {
         try {
             bgImage = ImageIO.read(new File("img/finalwargame.png"));
-            arch = ImageIO.read(new File("img/ArcherB.png"));
-            soldat = ImageIO.read(new File("img/SoldatB.png"));
-            cavalier = ImageIO.read(new File("img/CavalierB.png"));
-            elfe = ImageIO.read(new File("img/ElfeB.png"));
-            magicien = ImageIO.read(new File("img/MagicienB.png"));
+            
+            archer1 = ImageIO.read(new File("img/ArcherB.png"));
+            soldat1 = ImageIO.read(new File("img/SoldatB.png"));
+            cavalier1 = ImageIO.read(new File("img/CavalierB.png"));
+            elfe1 = ImageIO.read(new File("img/ElfeB.png"));
+            magicien1 = ImageIO.read(new File("img/MagicienB.png"));
+            
+            archer2 = ImageIO.read(new File("img/ArcherR.png"));
+            soldat2 = ImageIO.read(new File("img/SoldatR.png"));
+            cavalier2 = ImageIO.read(new File("img/CavalierR.png"));
+            elfe2 = ImageIO.read(new File("img/ElfeR.png"));
+            magicien2 = ImageIO.read(new File("img/MagicienR.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -236,17 +250,26 @@ public class PlateauHexagone extends JPanel implements ImageObserver {
 
         }
         for (UnitWithLocation u : unitLocations) {
-            if (u.getUnit() instanceof Archer) {
-                g.drawImage(arch, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
-
-            } else if (u.getUnit() instanceof Soldat) {
-                g.drawImage(soldat, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
-            } else if (u.getUnit() instanceof Cavalier) {
-                g.drawImage(cavalier, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
-            } else if (u.getUnit() instanceof Elfe) {
-                g.drawImage(elfe, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
-            } else if (u.getUnit() instanceof Magicien) {
-                g.drawImage(magicien, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 1) {
+                g.drawImage(archer1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 2) {
+                g.drawImage(archer2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Soldat && u.getUnit().getUserID() == 1) {
+                g.drawImage(soldat1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Soldat && u.getUnit().getUserID() == 2) {
+                g.drawImage(soldat2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Cavalier && u.getUnit().getUserID() == 1) {
+                g.drawImage(cavalier1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Cavalier && u.getUnit().getUserID() == 2) {
+                g.drawImage(cavalier2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Elfe && u.getUnit().getUserID() == 1) {
+                g.drawImage(elfe1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Elfe && u.getUnit().getUserID() == 2) {
+                g.drawImage(elfe2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Magicien && u.getUnit().getUserID() == 1) {
+                g.drawImage(magicien1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+            } else if (u.getUnit() instanceof Magicien && u.getUnit().getUserID() == 2) {
+                g.drawImage(magicien2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
             }
         }
     }

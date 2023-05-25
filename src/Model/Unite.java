@@ -94,6 +94,10 @@ public abstract class Unite {
         this.user = user;
     }
     
+    public int getUserID() {
+        return user.getId();
+    }
+    
     public abstract void attaquer(Unite unite);
     
     public abstract void deplacer();

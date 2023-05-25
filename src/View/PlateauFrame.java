@@ -4,6 +4,7 @@ import Model.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 public class PlateauFrame extends javax.swing.JFrame {
@@ -23,7 +24,7 @@ public class PlateauFrame extends javax.swing.JFrame {
 
         initParam();
 
-        initUnit(this.user1, panelUniteB, "B.png");
+        initUnit(this.user1, panelUnite, "B.png");
 
     }
 
@@ -62,21 +63,31 @@ public class PlateauFrame extends javax.swing.JFrame {
                     if (currentPlayer == user && plateauHexagone1.getCurrentUnit() == null) {
                         plateauHexagone1.setCurrentUnit(unites[index]);
                         imageLabels[index].setVisible(false);
+                        panel.revalidate();
+                        panel.repaint();
 
-                        // Vérifier si toutes les labels d'image du premier panel sont invisibles après avoir rendu invisible la dernière image
-                        if (index == imageLabels.length - 1) {
-                            boolean allInvisible = true;
-                            for (JLabel label : imageLabels) {
-                                if (label.isVisible()) {
-                                    allInvisible = false;
-                                    break;
+                        // Vérifier si toutes les labels d'image sont invisibles
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                boolean allInvisible = true;
+                                for (JLabel label : imageLabels) {
+                                    if (label.isVisible()) {
+                                        allInvisible = false;
+                                        break;
+                                    }
+                                }
+
+                                if (allInvisible) {
+                                    try {
+                                        TimeUnit.SECONDS.sleep(2); // Attendre 2 secondes
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    switchPlayer(); // Passer au joueur suivant
                                 }
                             }
+                        });
 
-                            if (allInvisible) {
-                                switchPlayer();  // Passer au joueur suivant
-                            }
-                        }
                     }
                 }
             });
@@ -88,8 +99,10 @@ public class PlateauFrame extends javax.swing.JFrame {
     private void switchPlayer() {
         if (currentPlayer == user1) {
             currentPlayer = user2;
-            panelUniteB.removeAll();  // Supprimer les unités du premier joueur du panneau
-            initUnit(user2, panelUniteR, "R.png");  // Réinitialiser les unités du deuxième joueur
+            panelUnite.removeAll();  // Supprimer les unités du premier joueur du panneau
+            initUnit(user2, panelUnite, "R.png");  // Réinitialiser les unités du deuxième joueur
+            panelUnite.revalidate();
+            panelUnite.repaint();
         }
     }
 
@@ -117,8 +130,7 @@ public class PlateauFrame extends javax.swing.JFrame {
         lbNbTour = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
-        panelUniteB = new javax.swing.JPanel();
-        panelUniteR = new javax.swing.JPanel();
+        panelUnite = new javax.swing.JPanel();
         plateauHexagone1 = new View.PlateauHexagone();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -218,9 +230,8 @@ public class PlateauFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelUniteR, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelUniteB, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelUnite, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -246,11 +257,9 @@ public class PlateauFrame extends javax.swing.JFrame {
                     .addComponent(lbUser2))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelUniteB, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelUniteR, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(58, 58, 58)
+                .addComponent(panelUnite, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -300,8 +309,7 @@ public class PlateauFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lbNbTour;
     private javax.swing.JLabel lbUser1;
     private javax.swing.JLabel lbUser2;
-    private javax.swing.JPanel panelUniteB;
-    private javax.swing.JPanel panelUniteR;
+    private javax.swing.JPanel panelUnite;
     private View.PlateauHexagone plateauHexagone1;
     // End of variables declaration//GEN-END:variables
 }
