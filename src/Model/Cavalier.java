@@ -2,6 +2,23 @@ package Model;
 
 public class Cavalier extends Unite {
     private int id;
+    private String name = "Cavalier";
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     public Cavalier(User user, int id) {
         super(6, 5, 3, 25, 8, 5, user);

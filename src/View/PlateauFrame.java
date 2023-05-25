@@ -5,14 +5,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
-import java.util.List;
-import java.util.ArrayList;
 
 public class PlateauFrame extends javax.swing.JFrame {
 
     User user1;
     User user2;
-    private List<Unite> placedUnits = new ArrayList<>();
+    private User currentPlayer;
 
     /**
      * Creates new form PlateauFrame
@@ -21,10 +19,11 @@ public class PlateauFrame extends javax.swing.JFrame {
         initComponents();
         this.user1 = user1;
         this.user2 = user2;
+        this.currentPlayer = user1;
 
         initParam();
 
-        initUnit(this.user1);
+        initUnit(this.user1, panelUniteB, "B.png");
 
     }
 
@@ -33,13 +32,13 @@ public class PlateauFrame extends javax.swing.JFrame {
         lbUser2.setText(this.user2.getName());
     }
 
-    public void initUnit(User user) {
+    public void initUnit(User user, JPanel targetPanel, String imageSuffix) {
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(200, 100));
         panel.setLayout(new GridLayout(1, 5));
 
         Unite[] unites = new Unite[5];
-        ImageClickable[] imageClickables = new ImageClickable[5];
+        JLabel[] imageLabels = new JLabel[5];
 
         // Création des instances des différents types d'unités
         unites[0] = new Archer(user, 1);
@@ -48,37 +47,50 @@ public class PlateauFrame extends javax.swing.JFrame {
         unites[3] = new Cavalier(user, 4);
         unites[4] = new Magicien(user, 5);
 
-        // Création des instances correspondantes d'ImageClickable
-        imageClickables[0] = new ArcherImageClickable((Archer) unites[0], new ImageIcon("img/ArcherB.png"));
-        imageClickables[1] = new SoldatImageClickable((Soldat) unites[1], new ImageIcon("img/SoldatB.png"));
-        imageClickables[2] = new ElfeImageClickable((Elfe) unites[2], new ImageIcon("img/ElfeB.png"));
-        imageClickables[3] = new CavalierImageClickable((Cavalier) unites[3], new ImageIcon("img/CavalierB.png"));
-        imageClickables[4] = new MagicienImageClickable((Magicien) unites[4], new ImageIcon("img/MagicienB.png"));
+        // Création des labels d'image correspondants
+        for (int i = 0; i < imageLabels.length; i++) {
+            imageLabels[i] = new JLabel(new ImageIcon("img/" + unites[i].getName().toLowerCase() + imageSuffix));
+            panel.add(imageLabels[i]);
+        }
 
-        // Ajout des MouseListeners aux ImageClickable
-        for (int i = 0; i < imageClickables.length; i++) {
+        // Ajout des MouseListeners aux labels d'image
+        for (int i = 0; i < imageLabels.length; i++) {
             final int index = i;
-                imageClickables[i].addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if(plateauHexagone1.getCurrentUnit() == null ){
-                            plateauHexagone1.setCurrentUnit(unites[index]);
-                            imageClickables[index].setVisible(false);
+            imageLabels[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (currentPlayer == user && plateauHexagone1.getCurrentUnit() == null) {
+                        plateauHexagone1.setCurrentUnit(unites[index]);
+                        imageLabels[index].setVisible(false);
+
+                        // Vérifier si toutes les labels d'image du premier panel sont invisibles après avoir rendu invisible la dernière image
+                        if (index == imageLabels.length - 1) {
+                            boolean allInvisible = true;
+                            for (JLabel label : imageLabels) {
+                                if (label.isVisible()) {
+                                    allInvisible = false;
+                                    break;
+                                }
+                            }
+
+                            if (allInvisible) {
+                                switchPlayer();  // Passer au joueur suivant
+                            }
                         }
                     }
-                });
+                }
+            });
         }
 
-        // Ajout des ImageClickable au JPanel
-        for (ImageClickable imageClickable : imageClickables) {
-            panel.add(imageClickable);
+        targetPanel.add(panel, BorderLayout.CENTER);
+    }
+
+    private void switchPlayer() {
+        if (currentPlayer == user1) {
+            currentPlayer = user2;
+            panelUniteB.removeAll();  // Supprimer les unités du premier joueur du panneau
+            initUnit(user2, panelUniteR, "R.png");  // Réinitialiser les unités du deuxième joueur
         }
-
-        // Ajout des Unite correspondants aux tableaux
-        Unite[][] unitesArray = {unites};
-        ImageClickable[][] imageClickablesArray = {imageClickables};
-
-        panelUniteB.add(panel, BorderLayout.CENTER);
     }
 
     /**

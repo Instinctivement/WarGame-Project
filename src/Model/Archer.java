@@ -2,6 +2,23 @@ package Model;
 
 public class Archer extends Unite {
     private int id;
+    private String name = "Archer";
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     public Archer(User user, int id) {
         super(2, 7, 2, 20, 10, 5, user);

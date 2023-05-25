@@ -9,6 +9,7 @@ public abstract class Unite {
     protected double tauxRecuperation;
     protected Arme arme;
     protected User user;
+    protected String name;
     
     public Unite(int nbDeplacement, int nbAttaque, int nbDefense, int nbPv, int nbVision, double tauxRecuperation, User user) {
         this.nbDeplacement = nbDeplacement;
@@ -21,6 +22,14 @@ public abstract class Unite {
         this.user = user;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public int getNbDeplacement() {
         return nbDeplacement;
     }

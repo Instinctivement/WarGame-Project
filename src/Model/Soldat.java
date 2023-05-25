@@ -2,6 +2,24 @@ package Model;
 
 public class Soldat extends Unite {
     private int id;
+    private String name = "Soldat";
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     
     public Soldat(User user, int id) {
         super(4, 5, 3, 20, 8, 5, user);
