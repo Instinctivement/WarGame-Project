@@ -6,12 +6,12 @@ import View.Hexagonegraph;
 import java.util.List;
 import java.util.ArrayList;
 
-
 /**
  *
  * @author mathistelle
  */
 public class PlateauLogique {
+
     private static final int RADIUS = 40;
     private static final int WIDTH = 12;
     private static final int HEIGHT = 11;
@@ -26,8 +26,9 @@ public class PlateauLogique {
     public void setUnitLocations(List<UnitWithLocation> unitLocations) {
         this.unitLocations = unitLocations;
     }
-    
+
     private UnitWithLocation selectedUnit;
+    private UnitWithLocation aimedUnit;
     private volatile Unite currentUnit;
 
     public UnitWithLocation getSelectedUnit() {
@@ -37,7 +38,7 @@ public class PlateauLogique {
     public void setSelectedUnit(UnitWithLocation selectedUnit) {
         this.selectedUnit = selectedUnit;
     }
-    
+
     public void setCurrentUnit(Unite unit) {
         this.currentUnit = unit;
     }
@@ -66,11 +67,10 @@ public class PlateauLogique {
 
             int movementRange = selectedUnit.getUnit().getNbDeplacement();
 
-
-            if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(),h) && movementRange>=terrain.getCost()){
+            if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(), h) && movementRange >= terrain.getCost()) {
                 // Move the selected unit to this hexagon
-                movementRange = movementRange-terrain.getCost();
-                System.out.println("il reste "+movementRange+" Déplacements");
+                movementRange = movementRange - terrain.getCost();
+                System.out.println("il reste " + movementRange + " Déplacements");
                 selectedUnit.getUnit().setNbDeplacement(movementRange);
 
                 unitLocations.remove(selectedUnit); // remove the old location from the list
@@ -81,10 +81,35 @@ public class PlateauLogique {
             } else {
                 System.out.println("TROP LOIN PAS ASSEZ DE DEPLACEMENT");
             }
-
-
-            if(selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
+            if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
                 selectedUnit = null;
+            }
+
+        } else if (selectedUnit != null && unitAtHexagone != null) {
+            Terrain terrain = h.getTerrain1();
+            UnitWithLocation unitAtDestination = Position_unite(h);
+            int movementRange = selectedUnit.getUnit().getNbDeplacement();
+
+            if (unitAtDestination != null && movementRange >= terrain.getCost()) {
+                movementRange = movementRange - terrain.getCost();
+                System.out.println("il reste " + movementRange + " Déplacements");
+                selectedUnit.getUnit().setNbDeplacement(movementRange);
+
+                if (selectedUnit.getUnitId() != unitAtHexagone.getUnitId()) {
+                    selectedUnit.getUnit().attaquer(unitAtHexagone.getUnit());
+                    System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
+                    System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
+                    selectedUnit = null;
+
+                } else if (selectedUnit.getUnitId() == unitAtHexagone.getUnitId()) {
+                    System.out.println("TU ATTAQUES TON PROPRE FRERE???????!!!");
+                    selectedUnit = null;
+                }
+
+            } else if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
+                selectedUnit = null;
+                System.out.println("PAS ASSEZ DE DEPLACEMENT");
+
             }
         }
     }
@@ -106,6 +131,21 @@ public class PlateauLogique {
             }
         }
         return false; // retourne false si aucune unité n'existe dans cet hexagone
+    }
+
+    public boolean checkUnitInHexagone2(Hexagonegraph hexagone, int n) {
+        for (UnitWithLocation unitLocation : unitLocations) {
+            if (unitLocation.getHexagone().equals(hexagone)) {
+                System.out.println("le USERID vaut: " + unitLocation.getUnit().getUserID());
+                if (unitLocation.getUnit().getUserID() == n) {
+                    //Attaque possible
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     public UnitWithLocation Position_unite(Hexagonegraph hexagone) {

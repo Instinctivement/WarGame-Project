@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package View;
 
 import Controller.PlateauLogique;
@@ -23,10 +19,7 @@ import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- *
- * @author mathistelle
- */
+
 
 public class PlateauVue extends JPanel implements ImageObserver {
     private static final int RADIUS = 40;
@@ -41,7 +34,6 @@ public class PlateauVue extends JPanel implements ImageObserver {
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private Hexagonegraph highlightedHexagone = null;
-    private List<UnitWithLocation> unitLocations = new ArrayList<>();
 
     private Image bgImage;
 
@@ -57,7 +49,7 @@ public class PlateauVue extends JPanel implements ImageObserver {
     private Image elfe2;
     private Image magicien2;
     
-    private PlateauLogique plateauLogique;
+    private PlateauLogique plateauLogique = new PlateauLogique();
 
     public PlateauLogique getPlateauLogique() {
         return plateauLogique;
@@ -255,7 +247,8 @@ public class PlateauVue extends JPanel implements ImageObserver {
             }
 
         }
-        for (UnitWithLocation u : plateauLogique.getUnitLocations()) {
+        
+        for (UnitWithLocation u : this.plateauLogique.getUnitLocations()) {
             if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 1) {
                 g.drawImage(archer1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
             } else if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 2) {
@@ -265,9 +258,9 @@ public class PlateauVue extends JPanel implements ImageObserver {
             } else if (u.getUnit() instanceof Soldat && u.getUnit().getUserID() == 2) {
                 g.drawImage(soldat2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
             } else if (u.getUnit() instanceof Cavalier && u.getUnit().getUserID() == 1) {
-                g.drawImage(cavalier1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(cavalier1, u.getCenterX() - 50, u.getCenterY() - 54, 75, 60, this);
             } else if (u.getUnit() instanceof Cavalier && u.getUnit().getUserID() == 2) {
-                g.drawImage(cavalier2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(cavalier2, u.getCenterX() - 50, u.getCenterY() - 54, 75, 60, this);
             } else if (u.getUnit() instanceof Elfe && u.getUnit().getUserID() == 1) {
                 g.drawImage(elfe1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
             } else if (u.getUnit() instanceof Elfe && u.getUnit().getUserID() == 2) {
