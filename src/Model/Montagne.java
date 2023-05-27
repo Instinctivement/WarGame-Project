@@ -6,7 +6,7 @@ package Model;
  */
 public class Montagne extends Terrain {
     public Montagne(){
-        super(2);
+        super(3);
     }
     
 }

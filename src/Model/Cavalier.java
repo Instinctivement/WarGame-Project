@@ -21,7 +21,7 @@ public class Cavalier extends Unite {
     }
     
     public Cavalier(User user, int id) {
-        super(6, 5, 3, 25, 8, 5, user);
+        super(5, 5, 3, 25, 5, 5, user);
         this.id = id;
     }
     

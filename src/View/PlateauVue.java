@@ -1,5 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package View;
 
+import Controller.PlateauLogique;
 import Model.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,139 +23,60 @@ import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.ArrayList;
 
-public class PlateauHexagone extends JPanel implements ImageObserver {
+/**
+ *
+ * @author mathistelle
+ */
 
+public class PlateauVue extends JPanel implements ImageObserver {
     private static final int RADIUS = 40;
     private static final int WIDTH = 12;
     private static final int HEIGHT = 11;
     private int imageWidth = 866; // Largeur de l'image
     private int imageHeight = 680; // Hauteur de l'image
-    int startX = 1; // Dimension de départ en x
-    int startY = 1; // Dimension de départ en y
-    int centerX = 0;
-    int centerY = 0;
+    private int startX = 1; // Dimension de départ en x
+    private int startY = 1; // Dimension de départ en y
+    private int centerX = 0;
+    private int centerY = 0;
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private Hexagonegraph highlightedHexagone = null;
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
 
     private Image bgImage;
-    
+
     private Image archer1;
     private Image soldat1;
     private Image cavalier1;
     private Image elfe1;
     private Image magicien1;
-    
+
     private Image archer2;
     private Image soldat2;
     private Image cavalier2;
     private Image elfe2;
     private Image magicien2;
+    
+    private PlateauLogique plateauLogique;
 
-    private UnitWithLocation selectedUnit;
-
-
-    private volatile Unite currentUnit;
-
-    public void setCurrentUnit(Unite unit) {
-        this.currentUnit = unit;
+    public PlateauLogique getPlateauLogique() {
+        return plateauLogique;
     }
 
-    public Unite getCurrentUnit() {
-        return currentUnit;
+    public void setPlateauLogique(PlateauLogique plateauLogique) {
+        this.plateauLogique = plateauLogique;
     }
     
-
-    public void addUnit(Unite unit, int centerX, int centerY, Hexagonegraph hexagone) {
-        if (!checkUnitInHexagone(hexagone)) {
-            this.unitLocations.add(new UnitWithLocation(unit, centerX, centerY, hexagone));
-        }
-    }
-    
-   public void Selectionner_bouger(UnitWithLocation unitAtHexagone, int centerX, int centerY, Hexagonegraph h) {
-    if (selectedUnit == null && unitAtHexagone != null) {
-        // Select the unit at this hexagon
-        selectedUnit = unitAtHexagone;
-        
-    } else if (selectedUnit != null && unitAtHexagone == null) {
-        
-        Terrain terrain = h.getTerrain1();
-        UnitWithLocation unitAtDestination = Position_unite(h);
-      
-        
-        System.out.println("Coût du terrain: " + terrain.getCost());
-       
-        
-        System.out.println(selectedUnit.getUnit().getName());
-
-        int movementRange = selectedUnit.getUnit().getNbDeplacement();
-
-        if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(),h) && movementRange>=terrain.getCost()){
-            // Move the selected unit to this hexagon
-            movementRange = movementRange-terrain.getCost();
-            System.out.println("il reste "+movementRange+" Déplacements");
-            selectedUnit.getUnit().setNbDeplacement(movementRange);
-
-            unitLocations.remove(selectedUnit); // remove the old location from the list
-            selectedUnit.setCenterX(centerX);
-            selectedUnit.setCenterY(centerY);
-            selectedUnit.setHexagone(h);
-            unitLocations.add(selectedUnit); // add the updated location to the list
-        } else {
-            System.out.println("TROP LOIN PAS ASSEZ DE DEPLACEMENT");
-        }
-
-        
-        if(selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
-            selectedUnit = null;
-        }
-    }
-}
-   
-
-public boolean isAdjacent(Hexagonegraph from, Hexagonegraph to) {
-    int dx = from.getCenterX() - to.getCenterX();
-    int dy = from.getCenterY() - to.getCenterY();
-    double distance = Math.sqrt(dx * dx + dy * dy);
-
-    // Ici, j'assume que la distance entre les centres de deux hexagones adjacents est égale au diamètre d'un hexagone, c'est-à-dire 2 * radius.
-    // Vous devrez peut-être ajuster cette valeur en fonction de la façon dont vous avez défini vos hexagones.
-    return distance <= 2 * RADIUS;
-}
-
-  
-
-
-    public boolean checkUnitInHexagone(Hexagonegraph hexagone) {
-        for (UnitWithLocation unitLocation : unitLocations) {
-            if (unitLocation.getHexagone().equals(hexagone)) {
-                return true; // retourne true si une unité existe dans cet hexagone
-            }
-        }
-        return false; // retourne false si aucune unité n'existe dans cet hexagone
-    }
-    
-    public UnitWithLocation Position_unite(Hexagonegraph hexagone) {
-    for (UnitWithLocation unitLocation : unitLocations) {
-        if (unitLocation.getHexagone().equals(hexagone)) {
-            return unitLocation;
-        }
-    }
-    return null;
-    }
-
-
-    public PlateauHexagone() {
+    public PlateauVue() {
         try {
             bgImage = ImageIO.read(new File("img/finalwargame.png"));
-            
+
             archer1 = ImageIO.read(new File("img/ArcherB.png"));
             soldat1 = ImageIO.read(new File("img/SoldatB.png"));
             cavalier1 = ImageIO.read(new File("img/CavalierB.png"));
             elfe1 = ImageIO.read(new File("img/ElfeB.png"));
             magicien1 = ImageIO.read(new File("img/MagicienB.png"));
-            
+
             archer2 = ImageIO.read(new File("img/ArcherR.png"));
             soldat2 = ImageIO.read(new File("img/SoldatR.png"));
             cavalier2 = ImageIO.read(new File("img/CavalierR.png"));
@@ -184,7 +110,7 @@ public boolean isAdjacent(Hexagonegraph from, Hexagonegraph to) {
                             // Calculate the center coordinates of the clicked hexagon
                             centerX = h.getX() + (RADIUS / 2);
                             centerY = h.getY() + (RADIUS / 2);
-                            
+
                             System.out.println("Center coordinates of the clicked hexagon: (" + centerX + ", " + centerY + ")");
 
                             h.setBorderColor(Color.red);
@@ -193,20 +119,22 @@ public boolean isAdjacent(Hexagonegraph from, Hexagonegraph to) {
                             System.out.println(terrain.getClass().getSimpleName());
                             System.out.println(terrain.getCost());
 
-                            
-                            UnitWithLocation unitAtHexagone = Position_unite(h);
-                            if (selectedUnit == null && unitAtHexagone == null && currentUnit != null) {
-                                addUnit(currentUnit, centerX, centerY, h);
+                            //PlateauLogique plateauLogique = new PlateauLogique();
+                            UnitWithLocation unitAtHexagone = plateauLogique.Position_unite(h);
+                            System.out.println("Debut");
+                            System.out.println(plateauLogique.getSelectedUnit());
+                            System.out.println(unitAtHexagone);
+                            System.out.println(plateauLogique.getCurrentUnit());
+                            System.out.println("Fin");
+                            if (plateauLogique.getSelectedUnit() == null && unitAtHexagone == null && plateauLogique.getCurrentUnit() != null) {
+                                
+                                plateauLogique.addUnit(plateauLogique.getCurrentUnit(), centerX, centerY, h);
                             }
-                            
-     
-                       
-                            Selectionner_bouger(unitAtHexagone, centerX, centerY, h);
-                            
-                            
-                            
+
+                            plateauLogique.Selectionner_bouger(unitAtHexagone, centerX, centerY, h);
+
                             repaint();  // Mettre à jour le dessin du plateau
-                            setCurrentUnit(null);
+                            plateauLogique.setCurrentUnit(null);
 
                             Timer timer = new Timer(300, new ActionListener() {
                                 @Override
@@ -327,7 +255,7 @@ public boolean isAdjacent(Hexagonegraph from, Hexagonegraph to) {
             }
 
         }
-        for (UnitWithLocation u : unitLocations) {
+        for (UnitWithLocation u : plateauLogique.getUnitLocations()) {
             if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 1) {
                 g.drawImage(archer1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
             } else if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 2) {

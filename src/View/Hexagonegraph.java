@@ -40,15 +40,28 @@ public class Hexagonegraph {
     public int getY() {
         return y;
     }
+    
+    public int getCenterX(){
+        return x + (radius / 2);                       
+    }
+    
+     public int getCenterY(){
+        return y + (radius / 2);                       
+    }
 
     public int getMatrixX() {
-        int x = this.y % 2 == 0 ? this.x : this.x - (int) (radius * Math.sqrt(3) / 2);
-        return (x - (startX - 1) * radius * (int) (Math.sqrt(3) / 2)) / (int) (radius * Math.sqrt(3));
-    }
+         int x = this.y % 2 == 0 ? this.x : this.x - (int) (radius * Math.sqrt(3) / 2);
+         return (x - (startX - 1) * radius * (int) (Math.sqrt(3) / 2)) / (int) (radius * Math.sqrt(3));
+     }
 
-    public int getMatrixY() {
-        return (this.y - (startY - 1) * radius * 3 / 2) / (int) (radius * 1.5);
-    }
+     public int getMatrixY() {
+         int y = this.y - (startY - 1) * radius * 3 / 2;
+         return y / (int) (radius * 1.5);
+     }
+
+     public int getMatrixZ() {
+         return -getMatrixX() - getMatrixY();
+     }
 
     public Terrain getTerrain1() {
         return terrain;

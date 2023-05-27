@@ -119,7 +119,7 @@ public class PlayersInfoFrame extends javax.swing.JFrame {
             User user1 = new User(1, txtUser1.getText());
             User user2 = new User(2, txtUser2.getText());
             
-            PlateauFrame pf = new PlateauFrame(user1, user2);
+            PlateauFrame1 pf = new PlateauFrame1(user1, user2);
             pf.setVisible(true);
             this.setVisible(false);
         }

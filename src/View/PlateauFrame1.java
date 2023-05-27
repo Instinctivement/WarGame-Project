@@ -1,5 +1,6 @@
 package View;
 
+import Controller.PlateauLogique;
 import Model.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -7,20 +8,23 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
-public class PlateauFrame extends javax.swing.JFrame {
+public class PlateauFrame1 extends javax.swing.JFrame {
 
     User user1;
     User user2;
     private User currentPlayer;
+    private PlateauLogique plateauLogique = new PlateauLogique();
 
     /**
      * Creates new form PlateauFrame
      */
-    public PlateauFrame(User user1, User user2) {
+    public PlateauFrame1(User user1, User user2) {
         initComponents();
         this.user1 = user1;
         this.user2 = user2;
         this.currentPlayer = user1;
+        
+        plateauVue1.setPlateauLogique(plateauLogique);
 
         initParam();
 
@@ -60,8 +64,8 @@ public class PlateauFrame extends javax.swing.JFrame {
             imageLabels[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (currentPlayer == user && plateauHexagone1.getCurrentUnit() == null) {
-                        plateauHexagone1.setCurrentUnit(unites[index]);
+                    if (currentPlayer == user && plateauLogique.getCurrentUnit() == null) {
+                        plateauLogique.setCurrentUnit(unites[index]);
                         imageLabels[index].setVisible(false);
                         panel.revalidate();
                         panel.repaint();
@@ -131,7 +135,7 @@ public class PlateauFrame extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         panelUnite = new javax.swing.JPanel();
-        plateauHexagone1 = new View.PlateauHexagone();
+        plateauVue1 = new View.PlateauVue();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -277,15 +281,15 @@ public class PlateauFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(plateauHexagone1, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(plateauVue1, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(plateauHexagone1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(plateauVue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -310,6 +314,6 @@ public class PlateauFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lbUser1;
     private javax.swing.JLabel lbUser2;
     private javax.swing.JPanel panelUnite;
-    private View.PlateauHexagone plateauHexagone1;
+    private View.PlateauVue plateauVue1;
     // End of variables declaration//GEN-END:variables
 }

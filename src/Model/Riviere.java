@@ -6,6 +6,6 @@ package Model;
  */
 public class Riviere extends Terrain {
     public Riviere(){
-        super(1);
+        super(3);
     }
 }

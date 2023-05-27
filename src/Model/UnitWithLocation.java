@@ -3,9 +3,10 @@ package Model;
 import View.Hexagonegraph;
 
 public class UnitWithLocation {
+
     private Unite unit;
     private int centerX, centerY;
-      private Hexagonegraph hexagone;
+    private Hexagonegraph hexagone;
 
     public UnitWithLocation(Unite unit, int centerX, int centerY, Hexagonegraph hexagone) {
         this.unit = unit;
@@ -26,6 +27,7 @@ public class UnitWithLocation {
     public int getCenterY() {
         return centerY;
     }
+
     public void setCenterX(int centerX) {
         this.centerX = centerX;
     }
@@ -33,12 +35,17 @@ public class UnitWithLocation {
     public void setCenterY(int centerY) {
         this.centerY = centerY;
     }
-    
+
     public Hexagonegraph getHexagone() {
         return hexagone;
     }
+
     public void setHexagone(Hexagonegraph hexagone) {
-    this.hexagone = hexagone;
-}
+        this.hexagone = hexagone;
+    }
+    
+    public int getUnitId() {
+        return unit.getUserID();
+    }
 
 }
