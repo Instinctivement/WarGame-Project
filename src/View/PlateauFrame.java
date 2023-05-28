@@ -22,6 +22,8 @@ public class PlateauFrame extends javax.swing.JFrame {
     private boolean gameEnded;
     private boolean unitsPlaced;
     private boolean turnPassed;
+    JPanel panelImg = new JPanel();
+    DynamicLabel dynamicLabel = new DynamicLabel();
 
     /**
      * Creates new form PlateauFrame
@@ -45,6 +47,7 @@ public class PlateauFrame extends javax.swing.JFrame {
 
         plateauVue.setPlateauLogique(plateauLogique);
         plateauLogique.setCurrentPlayerId(currentPlayerId);
+        plateauLogique.setDynamicLabel(dynamicLabel);
 
     }
 
@@ -129,6 +132,13 @@ public class PlateauFrame extends javax.swing.JFrame {
             panelUnite.repaint();
         } else {
             plateauLogique.setCurrentPlayerId(1);
+            lbInstruction.setText("Informations sur la partie");
+            panelUnite.removeAll();
+            panelUnite.revalidate();
+            panelUnite.setPreferredSize(new Dimension(300, 50));
+            panelUnite.revalidate();
+            panelUnite.repaint();
+            panelUnite.add(dynamicLabel, BorderLayout.CENTER);
             unitsPlaced();
             updateUI();
         }
@@ -396,12 +406,6 @@ public class PlateauFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jSeparator2)
                         .addContainerGap())))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelUnite, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -435,6 +439,15 @@ public class PlateauFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(lbInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(panelUnite, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

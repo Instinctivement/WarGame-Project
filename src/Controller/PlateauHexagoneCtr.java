@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.*;
+import View.DynamicLabel;
 import View.Hexagonegraph;
 
 import java.util.List;
@@ -17,9 +18,18 @@ public class PlateauHexagoneCtr {
     private static final int WIDTH = 12;
     private static final int HEIGHT = 11;
     private int currentPlayerId;
+    DynamicLabel dynamicLabel = new DynamicLabel();
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
+
+    public DynamicLabel getDynamicLabel() {
+        return dynamicLabel;
+    }
+
+    public void setDynamicLabel(DynamicLabel dynamicLabel) {
+        this.dynamicLabel = dynamicLabel;
+    }
 
     public int getCurrentPlayerId() {
         return currentPlayerId;
@@ -62,22 +72,22 @@ public class PlateauHexagoneCtr {
             this.unitLocations.add(new UnitWithLocation(unit, centerX, centerY, hexagone));
         }
     }
-    
-    public void Reinitialiser(){
-         for (UnitWithLocation unite : unitLocations) {
-             unite.getUnit().setPASEteAttaquee();     
-         }
+
+    public void Reinitialiser() {
+        for (UnitWithLocation unite : unitLocations) {
+            unite.getUnit().setPASEteAttaquee();
+        }
     }
-    
-    public void ReinitialiserPointsDeplacement(){
-         for (UnitWithLocation unite : unitLocations) {
-             unite.getUnit().setNbDeplacement(unite.getUnit().nbDeplacementMax);     
-         }
+
+    public void ReinitialiserPointsDeplacement() {
+        for (UnitWithLocation unite : unitLocations) {
+            unite.getUnit().setNbDeplacement(unite.getUnit().nbDeplacementMax);
+        }
     }
-    
-    public void RecupPV(){
-        for (UnitWithLocation unite : unitLocations){
-            if (unite.getUnit().isAEteAttaquee()==false && unite.getUnit().isAEteDeplace()){
+
+    public void RecupPV() {
+        for (UnitWithLocation unite : unitLocations) {
+            if (unite.getUnit().isAEteAttaquee() == false && unite.getUnit().isAEteDeplace()) {
                 unite.getUnit().recuperer();
             }
         }
@@ -101,6 +111,7 @@ public class PlateauHexagoneCtr {
                 if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(), h) && movementRange >= terrain.getCost()) {
                     // Move the selected unit to this hexagon
                     movementRange = movementRange - terrain.getCost();
+                    dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + "il reste " + movementRange + " points de déplacements");
                     System.out.println("il reste " + movementRange + " Déplacements");
                     selectedUnit.getUnit().setNbDeplacement(movementRange);
                     selectedUnit.getUnit().isAEteDeplace();
@@ -109,10 +120,8 @@ public class PlateauHexagoneCtr {
                     selectedUnit.setCenterY(centerY);
                     selectedUnit.setHexagone(h);
                     unitLocations.add(selectedUnit); // add the updated location to the list
-                    //selectedUnit = null;
-                    
+
                 } else {
-                    selectedUnit = null;
                     JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
                 }
                 if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
@@ -130,13 +139,14 @@ public class PlateauHexagoneCtr {
                 int movementRange = selectedUnit.getUnit().getNbDeplacement();
 
                 if (unitAtDestination != null && movementRange >= terrain.getCost()) {
-                    movementRange = movementRange - terrain.getCost();
-                    System.out.println("il reste " + movementRange + " Déplacements");
-                    selectedUnit.getUnit().setNbDeplacement(movementRange);
-
                     if (selectedUnit.getUnitId() != unitAtHexagone.getUnitId()) {
+                        movementRange = movementRange - terrain.getCost();
+                        System.out.println("il reste " + movementRange + " Déplacements");
+                        selectedUnit.getUnit().setNbDeplacement(movementRange);
+
                         selectedUnit.getUnit().attaquer(unitAtHexagone.getUnit());
                         unitAtHexagone.getUnit().setAEteAttaquee();
+                        dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
                         System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
                         System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
                         selectedUnit.getUnit().setNbDeplacement(0);
@@ -151,6 +161,7 @@ public class PlateauHexagoneCtr {
                     selectedUnit = null;
                     JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
                 }
+
             } else {
                 selectedUnit = null;
                 JOptionPane.showMessageDialog(null, "Merci d'attendre votre tour de jeu pour déplacer ces unités");
