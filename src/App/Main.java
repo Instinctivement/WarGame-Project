@@ -14,7 +14,10 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
-        initComponents();
+        initComponents ();
+        SoundPlayer soundPlayer = new SoundPlayer () ;
+        Thread soundThread = new Thread( soundPlayer);
+        soundThread.start();
     }
     
     private void setContentPaneWithBackgroundImage(String imagePath) {

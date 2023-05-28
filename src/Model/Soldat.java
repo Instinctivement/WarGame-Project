@@ -22,7 +22,7 @@ public class Soldat extends Unite {
     
     
     public Soldat(User user, int id) {
-        super(4, 5, 3, 20, 4, 5, user);
+        super(4, 5, 3, 20, 4, 5, user, 4, 20);
         this.id = id;
     }
     

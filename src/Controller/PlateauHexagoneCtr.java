@@ -38,7 +38,7 @@ public class PlateauHexagoneCtr {
     }
 
     private UnitWithLocation selectedUnit;
-    private UnitWithLocation aimedUnit;
+    //private UnitWithLocation aimedUnit;
     private volatile Unite currentUnit;
 
     public UnitWithLocation getSelectedUnit() {
@@ -66,6 +66,12 @@ public class PlateauHexagoneCtr {
     public void Reinitialiser(){
          for (UnitWithLocation unite : unitLocations) {
              unite.getUnit().setPASEteAttaquee();     
+         }
+    }
+    
+    public void ReinitialiserPointsDeplacement(){
+         for (UnitWithLocation unite : unitLocations) {
+             unite.getUnit().setNbDeplacement(unite.getUnit().nbDeplacementMax);     
          }
     }
     
@@ -133,6 +139,7 @@ public class PlateauHexagoneCtr {
                         unitAtHexagone.getUnit().setAEteAttaquee();
                         System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
                         System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
+                        selectedUnit.getUnit().setNbDeplacement(0);
                         selectedUnit = null;
 
                     } else if (selectedUnit.getUnitId() == unitAtHexagone.getUnitId()) {

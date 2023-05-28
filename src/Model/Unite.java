@@ -1,6 +1,7 @@
 package Model;
 
 public abstract class Unite {
+
     protected int nbDeplacement;
     protected int nbAttaque;
     protected int nbDefense;
@@ -12,9 +13,10 @@ public abstract class Unite {
     protected String name;
     protected boolean aEteAttaquee;
     protected boolean aEteDeplace;
-   
-    
-    public Unite(int nbDeplacement, int nbAttaque, int nbDefense, int nbPv, int nbVision, double tauxRecuperation, User user) {
+    public final int nbDeplacementMax;
+    public final int nbPvMax;
+
+    public Unite(int nbDeplacement, int nbAttaque, int nbDefense, int nbPv, int nbVision, double tauxRecuperation, User user, int nbDeplacementMax, int nbPvMax) {
         this.nbDeplacement = nbDeplacement;
         this.nbAttaque = nbAttaque;
         this.nbDefense = nbDefense;
@@ -23,6 +25,8 @@ public abstract class Unite {
         this.tauxRecuperation = tauxRecuperation;
         this.arme = new Arme();
         this.user = user;
+        this.nbDeplacementMax = nbDeplacementMax;
+        this.nbPvMax = nbPvMax;
     }
 
     public String getName() {
@@ -32,7 +36,7 @@ public abstract class Unite {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public int getNbDeplacement() {
         return nbDeplacement;
     }
@@ -96,31 +100,38 @@ public abstract class Unite {
     public void setUser(User user) {
         this.user = user;
     }
-    
+
     public int getUserID() {
         return user.getId();
     }
-    
+
     public boolean isAEteAttaquee() {
         return aEteAttaquee;
     }
-    
-    public boolean isAEteDeplace(){
+
+    public boolean isAEteDeplace() {
         return aEteDeplace;
     }
-    
+
     public void setAEteAttaquee() {
-        aEteAttaquee=true;
+        aEteAttaquee = true;
     }
 
     public void setPASEteAttaquee() {
-        aEteAttaquee=false;
+        aEteAttaquee = false;
     }
-    
-    public abstract void attaquer(Unite unite);
-    
-    public abstract void deplacer();
-    
-    public abstract void recuperer();
-}
 
+    public abstract void attaquer(Unite unite);
+
+    public abstract void deplacer();
+
+    public void recuperer() {
+        // Logique spécifique à la récupération de l'archer
+        int newpv = (int) (tauxRecuperation * nbPv / 100 + nbPv);
+
+        if (newpv > nbPvMax) {
+            newpv = nbPvMax;
+            setNbPv(newpv);
+        }
+    }
+}

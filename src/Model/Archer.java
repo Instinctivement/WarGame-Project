@@ -21,7 +21,7 @@ public class Archer extends Unite {
     }
     
     public Archer(User user, int id) {
-        super(3, 7, 2, 20, 5, 5, user);
+        super(3, 7, 2, 20, 5, 5, user, 3, 20);
         this.id = id;
     }
     

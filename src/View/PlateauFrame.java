@@ -123,10 +123,12 @@ public class PlateauFrame extends javax.swing.JFrame {
             currentPlayer = user2;
             panelUnite.removeAll();  // Supprimer les unités du premier joueur du panneau
             initUnit(user2, panelUnite, "R.png");  // Réinitialiser les unités du deuxième joueur
+            plateauLogique.setCurrentPlayerId(2);
             lbCurrentUser.setText(this.user2.getName());
             panelUnite.revalidate();
             panelUnite.repaint();
         } else {
+            plateauLogique.setCurrentPlayerId(1);
             unitsPlaced();
             updateUI();
         }
@@ -174,6 +176,7 @@ public class PlateauFrame extends javax.swing.JFrame {
         plateauLogique.setSelectedUnit(null);
         plateauLogique.Reinitialiser();
         plateauLogique.RecupPV();
+        plateauLogique.ReinitialiserPointsDeplacement();
         totalTurns++;
         turnPassed = false;
 

@@ -21,7 +21,7 @@ public class Magicien extends Unite {
     }
     
     public Magicien(User user, int id) {
-        super(3, 3, 7, 15, 4, 25, user);
+        super(3, 3, 7, 15, 4, 25, user, 3, 15);
         this.id = id;
     }
     

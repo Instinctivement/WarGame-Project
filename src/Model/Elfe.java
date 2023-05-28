@@ -21,7 +21,7 @@ public class Elfe extends Unite {
     }
     
     public Elfe(User user, int id) {
-        super(4, 8, 4, 25, 4, 10, user);
+        super(4, 8, 4, 25, 4, 10, user, 4, 25);
         this.id = id;
     }
     
