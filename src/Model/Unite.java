@@ -10,6 +10,9 @@ public abstract class Unite {
     protected Arme arme;
     protected User user;
     protected String name;
+    protected boolean aEteAttaquee;
+    protected boolean aEteDeplace;
+   
     
     public Unite(int nbDeplacement, int nbAttaque, int nbDefense, int nbPv, int nbVision, double tauxRecuperation, User user) {
         this.nbDeplacement = nbDeplacement;
@@ -96,6 +99,22 @@ public abstract class Unite {
     
     public int getUserID() {
         return user.getId();
+    }
+    
+    public boolean isAEteAttaquee() {
+        return aEteAttaquee;
+    }
+    
+    public boolean isAEteDeplace(){
+        return aEteDeplace;
+    }
+    
+    public void setAEteAttaquee() {
+        aEteAttaquee=true;
+    }
+
+    public void setPASEteAttaquee() {
+        aEteAttaquee=false;
     }
     
     public abstract void attaquer(Unite unite);
