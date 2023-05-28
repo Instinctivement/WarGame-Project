@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.io.File;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
-import java.util.List;
-import java.util.ArrayList;
 
 
 
@@ -113,11 +111,6 @@ public class PlateauVue extends JPanel implements ImageObserver {
 
                             //PlateauLogique plateauLogique = new PlateauLogique();
                             UnitWithLocation unitAtHexagone = plateauLogique.Position_unite(h);
-                            System.out.println("Debut");
-                            System.out.println(plateauLogique.getSelectedUnit());
-                            System.out.println(unitAtHexagone);
-                            System.out.println(plateauLogique.getCurrentUnit());
-                            System.out.println("Fin");
                             if (plateauLogique.getSelectedUnit() == null && unitAtHexagone == null && plateauLogique.getCurrentUnit() != null) {
                                 
                                 plateauLogique.addUnit(plateauLogique.getCurrentUnit(), centerX, centerY, h);

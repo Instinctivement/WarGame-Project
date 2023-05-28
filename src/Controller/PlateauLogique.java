@@ -5,6 +5,7 @@ import View.Hexagonegraph;
 
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,9 +16,18 @@ public class PlateauLogique {
     private static final int RADIUS = 40;
     private static final int WIDTH = 12;
     private static final int HEIGHT = 11;
+    private int currentPlayerId;
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
+
+    public int getCurrentPlayerId() {
+        return currentPlayerId;
+    }
+
+    public void setCurrentPlayerId(int currentPlayerId) {
+        this.currentPlayerId = currentPlayerId;
+    }
 
     public List<UnitWithLocation> getUnitLocations() {
         return unitLocations;
@@ -49,7 +59,6 @@ public class PlateauLogique {
 
     public void addUnit(Unite unit, int centerX, int centerY, Hexagonegraph hexagone) {
         if (!checkUnitInHexagone(hexagone)) {
-            System.out.println("Je suis là");
             this.unitLocations.add(new UnitWithLocation(unit, centerX, centerY, hexagone));
         }
     }
@@ -58,58 +67,68 @@ public class PlateauLogique {
         if (selectedUnit == null && unitAtHexagone != null) {
             // Select the unit at this hexagon
             selectedUnit = unitAtHexagone;
+            // && selectedUnit.getUnit().getUserID() == currentPlayerId
         } else if (selectedUnit != null && unitAtHexagone == null) {
-            Terrain terrain = h.getTerrain1();
-            UnitWithLocation unitAtDestination = Position_unite(h);
+            if (selectedUnit.getUnit().getUserID() == currentPlayerId) {
+                Terrain terrain = h.getTerrain1();
+                UnitWithLocation unitAtDestination = Position_unite(h);
 
-            System.out.println("Coût du terrain: " + terrain.getCost());
-            System.out.println(selectedUnit.getUnit().getName());
+                System.out.println("Coût du terrain: " + terrain.getCost());
+                System.out.println(selectedUnit.getUnit().getName());
 
-            int movementRange = selectedUnit.getUnit().getNbDeplacement();
+                int movementRange = selectedUnit.getUnit().getNbDeplacement();
 
-            if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(), h) && movementRange >= terrain.getCost()) {
-                // Move the selected unit to this hexagon
-                movementRange = movementRange - terrain.getCost();
-                System.out.println("il reste " + movementRange + " Déplacements");
-                selectedUnit.getUnit().setNbDeplacement(movementRange);
+                if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(), h) && movementRange >= terrain.getCost()) {
+                    // Move the selected unit to this hexagon
+                    movementRange = movementRange - terrain.getCost();
+                    System.out.println("il reste " + movementRange + " Déplacements");
+                    selectedUnit.getUnit().setNbDeplacement(movementRange);
 
-                unitLocations.remove(selectedUnit); // remove the old location from the list
-                selectedUnit.setCenterX(centerX);
-                selectedUnit.setCenterY(centerY);
-                selectedUnit.setHexagone(h);
-                unitLocations.add(selectedUnit); // add the updated location to the list
+                    unitLocations.remove(selectedUnit); // remove the old location from the list
+                    selectedUnit.setCenterX(centerX);
+                    selectedUnit.setCenterY(centerY);
+                    selectedUnit.setHexagone(h);
+                    unitLocations.add(selectedUnit); // add the updated location to the list
+                } else {
+                    JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
+                }
+                if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
+                    selectedUnit = null;
+                }
             } else {
-                System.out.println("TROP LOIN PAS ASSEZ DE DEPLACEMENT");
-            }
-            if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
-                selectedUnit = null;
+                JOptionPane.showMessageDialog(null, "Merci d'attendre votre tour de jeu pour déplacer ces unités");
+                setSelectedUnit(null);
             }
 
         } else if (selectedUnit != null && unitAtHexagone != null) {
-            Terrain terrain = h.getTerrain1();
-            UnitWithLocation unitAtDestination = Position_unite(h);
-            int movementRange = selectedUnit.getUnit().getNbDeplacement();
+            if (selectedUnit.getUnit().getUserID() == currentPlayerId) {
+                Terrain terrain = h.getTerrain1();
+                UnitWithLocation unitAtDestination = Position_unite(h);
+                int movementRange = selectedUnit.getUnit().getNbDeplacement();
 
-            if (unitAtDestination != null && movementRange >= terrain.getCost()) {
-                movementRange = movementRange - terrain.getCost();
-                System.out.println("il reste " + movementRange + " Déplacements");
-                selectedUnit.getUnit().setNbDeplacement(movementRange);
+                if (unitAtDestination != null && movementRange >= terrain.getCost()) {
+                    movementRange = movementRange - terrain.getCost();
+                    System.out.println("il reste " + movementRange + " Déplacements");
+                    selectedUnit.getUnit().setNbDeplacement(movementRange);
 
-                if (selectedUnit.getUnitId() != unitAtHexagone.getUnitId()) {
-                    selectedUnit.getUnit().attaquer(unitAtHexagone.getUnit());
-                    System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
-                    System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
+                    if (selectedUnit.getUnitId() != unitAtHexagone.getUnitId()) {
+                        selectedUnit.getUnit().attaquer(unitAtHexagone.getUnit());
+                        System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
+                        System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
+                        selectedUnit = null;
+
+                    } else if (selectedUnit.getUnitId() == unitAtHexagone.getUnitId()) {
+                        JOptionPane.showMessageDialog(null, "Vous ne pouvez pas attaquer un allié");
+                        selectedUnit = null;
+                    }
+
+                } else if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
                     selectedUnit = null;
-
-                } else if (selectedUnit.getUnitId() == unitAtHexagone.getUnitId()) {
-                    System.out.println("TU ATTAQUES TON PROPRE FRERE???????!!!");
-                    selectedUnit = null;
+                    JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
                 }
-
-            } else if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
-                selectedUnit = null;
-                System.out.println("PAS ASSEZ DE DEPLACEMENT");
-
+            } else {
+                JOptionPane.showMessageDialog(null, "Merci d'attendre votre tour de jeu pour déplacer ces unités");
+                setSelectedUnit(null);
             }
         }
     }
