@@ -22,6 +22,16 @@ public class PlateauHexagoneCtr {
 
     private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
+    private List<BarreDeVie> barresDeVie = new ArrayList<>();
+
+    public List<BarreDeVie> getBarresDeVie() {
+        return barresDeVie;
+    }
+
+    public void setBarresDeVie(List<BarreDeVie> barresDeVie) {
+        this.barresDeVie = barresDeVie;
+    }
+    
 
     public DynamicLabel getDynamicLabel() {
         return dynamicLabel;
@@ -69,13 +79,16 @@ public class PlateauHexagoneCtr {
 
     public void addUnit(Unite unit, int centerX, int centerY, Hexagonegraph hexagone) {
         if (!checkUnitInHexagone(hexagone)) {
-            this.unitLocations.add(new UnitWithLocation(unit, centerX, centerY, hexagone));
+            UnitWithLocation unitWlocation = new UnitWithLocation(unit, centerX, centerY, hexagone);
+            this.unitLocations.add(unitWlocation);
+            this.barresDeVie.add(unitWlocation.getLifeBar());
         }
     }
 
     public void Reinitialiser() {
         for (UnitWithLocation unite : unitLocations) {
             unite.getUnit().setPASEteAttaquee();
+            //unite.getUnit().setPASEteDeplace();
         }
     }
 
@@ -87,10 +100,30 @@ public class PlateauHexagoneCtr {
 
     public void RecupPV() {
         for (UnitWithLocation unite : unitLocations) {
-            if (unite.getUnit().isAEteAttaquee() == false && unite.getUnit().isAEteDeplace()) {
+            if (unite.getUnit().isAEteAttaquee() == false && unite.getUnit().isAEteDeplace()==false) {
                 unite.getUnit().recuperer();
+                barresDeVie.remove(unite.getLifeBar());// remove the old lifebar from the list
+                unite.getLifeBar().setX(unite.getCenterX()-40);
+                unite.getLifeBar().setY(unite.getCenterY()-60);
+                unite.getLifeBar().setValeurActuelle(unite.getUnit().getNbPv());
+                barresDeVie.add(unite.getLifeBar()); // add the updated bar to the list
+            }
+            
+        }
+    }
+    
+    public boolean endgame(int userId) {
+        
+        boolean isIt = false;
+        for (UnitWithLocation unite : unitLocations) {
+            if (unite.getUnitId() == userId && unite.getUnit().getNbPv() > 0) {
+                isIt = true;
+            }
+            if (unite.getUnitId() == userId && unite.getUnit().getNbPv() < 0) {
+                return false;
             }
         }
+        return isIt;
     }
 
     public void Selectionner_bouger(UnitWithLocation unitAtHexagone, int centerX, int centerY, Hexagonegraph h) {
@@ -113,6 +146,7 @@ public class PlateauHexagoneCtr {
                     movementRange = movementRange - terrain.getCost();
                     dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + "il reste " + movementRange + " points de déplacements");
                     System.out.println("il reste " + movementRange + " Déplacements");
+                    selectedUnit.getUnit().setAEteDeplace();
                     selectedUnit.getUnit().setNbDeplacement(movementRange);
                     selectedUnit.getUnit().isAEteDeplace();
                     unitLocations.remove(selectedUnit); // remove the old location from the list
@@ -120,6 +154,11 @@ public class PlateauHexagoneCtr {
                     selectedUnit.setCenterY(centerY);
                     selectedUnit.setHexagone(h);
                     unitLocations.add(selectedUnit); // add the updated location to the list
+                    barresDeVie.remove(selectedUnit.getLifeBar());// remove the old lifebar from the list
+                    selectedUnit.getLifeBar().setX(centerX-40);
+                    selectedUnit.getLifeBar().setY(centerY-60);
+                    selectedUnit.getLifeBar().setValeurActuelle(selectedUnit.getUnit().getNbPv());
+                    barresDeVie.add(selectedUnit.getLifeBar()); // add the updated bar to the list
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
@@ -131,6 +170,7 @@ public class PlateauHexagoneCtr {
                 selectedUnit = null;
                 JOptionPane.showMessageDialog(null, "Merci d'attendre votre tour de jeu pour déplacer ces unités");
             }
+            selectedUnit = null;
 
         } else if (selectedUnit != null && unitAtHexagone != null) {
             if (selectedUnit.getUnit().getUserID() == currentPlayerId) {
@@ -149,6 +189,18 @@ public class PlateauHexagoneCtr {
                         dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
                         System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
                         System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
+                        if (unitAtHexagone.getUnit().getNbPv() <= 0) {
+                        unitLocations.remove(unitAtHexagone);
+                        barresDeVie.remove(unitAtHexagone.getLifeBar());
+                        dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a trépassé");
+                        }
+                        else{
+                        barresDeVie.remove(unitAtHexagone.getLifeBar());// remove the old lifebar from the list
+                        unitAtHexagone.getLifeBar().setX(centerX-40);
+                        unitAtHexagone.getLifeBar().setY(centerY-60);
+                        unitAtHexagone.getLifeBar().setValeurActuelle(unitAtHexagone.getUnit().getNbPv());
+                        barresDeVie.add(unitAtHexagone.getLifeBar()); // add the updated bar to the list
+                        }
                         selectedUnit.getUnit().setNbDeplacement(0);
                         selectedUnit = null;
 

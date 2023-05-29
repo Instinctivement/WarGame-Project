@@ -240,29 +240,48 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver {
             }
 
         }
+       
+            
         
         for (UnitWithLocation u : this.plateauLogique.getUnitLocations()) {
             if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 1) {
-                g.drawImage(archer1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(archer1, u.getCenterX() - 33, u.getCenterY() - 60, 40, 73, this);
             } else if (u.getUnit() instanceof Archer && u.getUnit().getUserID() == 2) {
-                g.drawImage(archer2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(archer2, u.getCenterX() - 42, u.getCenterY() - 60, 40, 73, this);
             } else if (u.getUnit() instanceof Soldat && u.getUnit().getUserID() == 1) {
-                g.drawImage(soldat1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(soldat1, u.getCenterX() - 39, u.getCenterY() - 58, 40, 72, this);
             } else if (u.getUnit() instanceof Soldat && u.getUnit().getUserID() == 2) {
-                g.drawImage(soldat2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(soldat2, u.getCenterX() - 39, u.getCenterY() - 58, 40, 72, this);
             } else if (u.getUnit() instanceof Cavalier && u.getUnit().getUserID() == 1) {
-                g.drawImage(cavalier1, u.getCenterX() - 50, u.getCenterY() - 54, 75, 60, this);
+                g.drawImage(cavalier1, u.getCenterX() - 52, u.getCenterY() - 51, 75, 60, this);
             } else if (u.getUnit() instanceof Cavalier && u.getUnit().getUserID() == 2) {
-                g.drawImage(cavalier2, u.getCenterX() - 50, u.getCenterY() - 54, 75, 60, this);
+                g.drawImage(cavalier2, u.getCenterX() - 61, u.getCenterY() - 51, 75, 60, this);
             } else if (u.getUnit() instanceof Elfe && u.getUnit().getUserID() == 1) {
-                g.drawImage(elfe1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(elfe1, u.getCenterX() - 31, u.getCenterY() - 54, 30, 70, this);
             } else if (u.getUnit() instanceof Elfe && u.getUnit().getUserID() == 2) {
-                g.drawImage(elfe2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(elfe2, u.getCenterX() - 37, u.getCenterY() - 54, 30, 70, this);
             } else if (u.getUnit() instanceof Magicien && u.getUnit().getUserID() == 1) {
-                g.drawImage(magicien1, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(magicien1, u.getCenterX() - 33, u.getCenterY() - 59, 40, 70, this);
             } else if (u.getUnit() instanceof Magicien && u.getUnit().getUserID() == 2) {
-                g.drawImage(magicien2, u.getCenterX() - 30, u.getCenterY() - 60, 30, 75, this);
+                g.drawImage(magicien2, u.getCenterX() - 42, u.getCenterY() - 59, 40, 70, this);
+            }
+           for (BarreDeVie barreDeVie : this.plateauLogique.getBarresDeVie()) {
+                int x = barreDeVie.getX();
+                int y = barreDeVie.getY();
+                int largeur = 40;
+                int hauteur = 5;
+                int valeurActuelle = barreDeVie.getValeurActuelle();
+                int valeurMaximale = barreDeVie.getValeurMax();
+                // Calculer la longueur de la barre de vie en fonction de la valeur actuelle et maximale
+                int longueurBarre = (int) ((double) largeur * valeurActuelle / valeurMaximale);
+                // Dessiner la barre de vie
+                g.setColor(Color.RED);
+                g.fillRect(x, y, largeur, hauteur);
+                g.setColor(Color.GREEN);
+                g.fillRect(x, y, longueurBarre, hauteur);
             }
         }
+        
+
     }
 }

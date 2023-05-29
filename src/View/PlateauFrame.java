@@ -17,13 +17,11 @@ public class PlateauFrame extends javax.swing.JFrame {
 
     private int currentPlayerId;
     private int totalTurns;
-    private int turnsCompleted;
     private int maxTurns = 10; // Nombre maximum de tours
-    private boolean gameEnded;
     private boolean unitsPlaced;
     private boolean turnPassed;
-    JPanel panelImg = new JPanel();
     DynamicLabel dynamicLabel = new DynamicLabel();
+    
 
     /**
      * Creates new form PlateauFrame
@@ -39,9 +37,7 @@ public class PlateauFrame extends javax.swing.JFrame {
         initUnit(this.user1, panelUnite, "B.png");
 
         currentPlayerId = 1;
-        totalTurns = 0;
-        turnsCompleted = 0;
-        gameEnded = false;
+        totalTurns = 1;
         unitsPlaced = false;
         turnPassed = false;
 
@@ -149,7 +145,12 @@ public class PlateauFrame extends javax.swing.JFrame {
     }
 
     private void passTurn() {
-        if (gameEnded || turnPassed) {
+        if (!unitsPlaced) {
+            JOptionPane.showMessageDialog(this, "Les joueurs doivent placer toutes leurs unités avant de commencer le jeu !");
+            return;
+        }
+        
+        if (turnPassed) {
             return;
         }
 
@@ -164,10 +165,6 @@ public class PlateauFrame extends javax.swing.JFrame {
     }
 
     private void nextTurn() {
-        if (gameEnded) {
-            return;
-        }
-
         // Vérifier si les deux joueurs ont placé toutes leurs unités
         if (!unitsPlaced) {
             JOptionPane.showMessageDialog(this, "Les joueurs doivent placer toutes leurs unités avant de commencer le jeu !");
@@ -180,12 +177,24 @@ public class PlateauFrame extends javax.swing.JFrame {
             return;
         }
 
+        /*n=plateauLogique.endgame();
+       
+        if(n==1 || n==2){
+            EndGame nouv = new EndGame();
+            nouv.jLabel1.setText("Victoire du Joueur "+n);
+            nouv.jLabel1.setFont(new java.awt.Font("Impact", 0, 36)); // NOI18N
+            nouv.jLabel1.setForeground(new java.awt.Color(255, 255, 0));
+            nouv.setVisible(true);
+            this.hide();
+        }else if (n==0){
+            //le jeu continue 
+        }*/
         // Changer de joueur et incrémenter le nombre de tours
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
         plateauLogique.setCurrentPlayerId(currentPlayerId);
         plateauLogique.setSelectedUnit(null);
-        plateauLogique.Reinitialiser();
         plateauLogique.RecupPV();
+        plateauLogique.Reinitialiser();
         plateauLogique.ReinitialiserPointsDeplacement();
         totalTurns++;
         turnPassed = false;
@@ -215,34 +224,57 @@ public class PlateauFrame extends javax.swing.JFrame {
     }
 
     private boolean isGameOver() {
+        if (totalTurns == maxTurns) {
+            return true;
+        } else if (plateauLogique.endgame(user1.getId()) && plateauLogique.endgame(user2.getId())) {
+            return false;
+        } else {
+            return true;
+        }
         // Logique pour vérifier si le jeu est terminé
         // Vérifier si l'un des joueurs n'a plus d'unités avec pv > 0
         // ou si le nombre de tours atteint le maximum
-        return false; // À implémenter
+        // À implémenter
     }
 
     private void endGame() {
         // Logique pour terminer le jeu
-        gameEnded = true;
+        EndGame endGameVue = new EndGame();
+        endGameVue.setPreferredSize(new Dimension(860, 580));
+        endGameVue.setResizable(false); 
+        endGameVue.jLabel1.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        endGameVue.jLabel1.setForeground(new java.awt.Color(255, 255, 0));
 
-        // Afficher le message de fin de jeu
-        String message;
         if (isDraw()) {
-            message = "Match nul !";
+            endGameVue.jLabel1.setText("Match Null !");
+            endGameVue.setVisible(true);
+            this.hide();
         } else {
-            int winnerId = (currentPlayerId == 1) ? 2 : 1;
-            message = "Le joueur " + winnerId + " a gagné !";
+            if (plateauLogique.endgame(user1.getId())) {
+                endGameVue.jLabel1.setText("Victoire du Joueur " + user1.getName());
+                endGameVue.setVisible(true);
+                this.hide();
+            }
+            if (plateauLogique.endgame(user2.getId())) {
+                endGameVue.jLabel1.setText("Victoire du Joueur " + user2.getName());
+                endGameVue.setVisible(true);
+                this.hide();
+            }
+
         }
-        JOptionPane.showMessageDialog(this, message);
 
         // Fermer la fenêtre du jeu
-        dispose();
     }
 
     private boolean isDraw() {
+        if (plateauLogique.endgame(user1.getId()) && plateauLogique.endgame(user2.getId())) {
+            return true;
+        } else {
+            return false;
+        }
         // Logique pour vérifier s'il y a match nul
         // Vérifier si les deux joueurs ont encore au moins une unité avec pv > 0
-        return false; // À implémenter
+        // À implémenter
     }
 
     /**

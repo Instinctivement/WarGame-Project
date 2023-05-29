@@ -112,6 +112,12 @@ public abstract class Unite {
     public boolean isAEteDeplace() {
         return aEteDeplace;
     }
+    public void setAEteDeplace(){
+        aEteDeplace = true;
+    }
+    public void setPASEteDeplace() {
+        aEteDeplace = false;
+    }
 
     public void setAEteAttaquee() {
         aEteAttaquee = true;
@@ -125,13 +131,15 @@ public abstract class Unite {
 
     public abstract void deplacer();
 
-    public void recuperer() {
+   public void recuperer() {
         // Logique spécifique à la récupération de l'archer
         int newpv = (int) (tauxRecuperation * nbPv / 100 + nbPv);
 
         if (newpv > nbPvMax) {
             newpv = nbPvMax;
-            setNbPv(newpv);
         }
+        setNbPv(newpv);
+        //System.out.println("Nouveau pv de "+this.getName()+"est:"+newpv);
     }
 }
+    
