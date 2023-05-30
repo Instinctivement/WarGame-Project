@@ -1,6 +1,8 @@
 package View;
 
-public class EndGame extends javax.swing.JFrame {
+import java.io.Serializable;
+
+public class EndGame extends javax.swing.JFrame implements Serializable {
 
     /**
      * Creates new form EndGame

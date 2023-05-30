@@ -1,6 +1,8 @@
 package Model;
 
-public abstract class Unite {
+import java.io.Serializable;
+
+public abstract class Unite implements Serializable {
 
     protected int nbDeplacement;
     protected int nbAttaque;

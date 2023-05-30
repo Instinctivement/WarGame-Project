@@ -4,8 +4,9 @@ import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class BarreDeVie extends JComponent {
+public class BarreDeVie extends JComponent implements Serializable {
     private int valeurMax;
     private int valeurActuelle;
     private int x;

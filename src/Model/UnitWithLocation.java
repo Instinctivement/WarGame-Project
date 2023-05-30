@@ -1,8 +1,9 @@
 package Model;
 
 import View.Hexagonegraph;
+import java.io.Serializable;
 
-public class UnitWithLocation {
+public class UnitWithLocation implements Serializable {
 
     private Unite unit;
     private int centerX, centerY;

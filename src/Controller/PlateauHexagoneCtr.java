@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import View.DynamicLabel;
 import View.Hexagonegraph;
+import java.io.Serializable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -12,15 +13,15 @@ import javax.swing.JOptionPane;
  *
  * @author mathistelle
  */
-public class PlateauHexagoneCtr {
+public class PlateauHexagoneCtr implements Serializable {
 
     private static final int RADIUS = 40;
     private static final int WIDTH = 12;
     private static final int HEIGHT = 11;
     private int currentPlayerId;
+    private volatile Unite currentUnit;
     DynamicLabel dynamicLabel = new DynamicLabel();
 
-    private Hexagonegraph[][] hexagones = new Hexagonegraph[WIDTH][HEIGHT];
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
     private List<BarreDeVie> barresDeVie = new ArrayList<>();
 
@@ -58,8 +59,6 @@ public class PlateauHexagoneCtr {
     }
 
     public UnitWithLocation selectedUnit;
-    //private UnitWithLocation aimedUnit;
-    private volatile Unite currentUnit;
 
     public UnitWithLocation getSelectedUnit() {
         return selectedUnit;

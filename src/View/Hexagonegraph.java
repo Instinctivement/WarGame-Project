@@ -2,9 +2,10 @@ package View;
 
 import Model.Terrain;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Hexagonegraph {
+public class Hexagonegraph implements Serializable {
 
     private int x;
     private int y;

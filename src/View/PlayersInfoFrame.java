@@ -2,9 +2,10 @@ package View;
 
 import App.Main;
 import Model.User;
+import java.io.Serializable;
 import javax.swing.JOptionPane;
 
-public class PlayersInfoFrame extends javax.swing.JFrame {
+public class PlayersInfoFrame extends javax.swing.JFrame implements Serializable {
 
     /**
      * Creates new form PlayersInfoFrame

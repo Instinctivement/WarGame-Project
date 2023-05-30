@@ -1,6 +1,8 @@
 package Model;
 
-public class Arme {
+import java.io.Serializable;
+
+public class Arme implements Serializable {
     private String nom;
     private int potentielAttaque;
     

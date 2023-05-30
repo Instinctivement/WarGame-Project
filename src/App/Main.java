@@ -1,14 +1,20 @@
 package App;
 
+import Controller.Partie;
 import View.HelpFrame;
+import View.PlateauFrame;
 import View.PlayersInfoFrame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame implements Serializable {
 
     /**
      * Creates new form Main
@@ -47,10 +53,12 @@ public class Main extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         btnHelp = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btnChargerPartie = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BEYOND THE RIVER");
+        setPreferredSize(new java.awt.Dimension(860, 570));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -69,7 +77,7 @@ public class Main extends javax.swing.JFrame {
                 btnNewGameActionPerformed(evt);
             }
         });
-        getContentPane().add(btnNewGame, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 252, 196, 40));
+        getContentPane().add(btnNewGame, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 190, 196, 40));
 
         btnExit.setBackground(new java.awt.Color(0, 102, 102));
         btnExit.setFont(new java.awt.Font("Perpetua Titling MT", 0, 14)); // NOI18N
@@ -98,8 +106,18 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setText("BEYOND THE RIVER");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, 390, 60));
 
+        btnChargerPartie.setBackground(new java.awt.Color(0, 102, 102));
+        btnChargerPartie.setFont(new java.awt.Font("Perpetua Titling MT", 0, 14)); // NOI18N
+        btnChargerPartie.setForeground(new java.awt.Color(255, 255, 255));
+        btnChargerPartie.setText("Charger Partie");
+        btnChargerPartie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChargerPartieActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnChargerPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 252, 196, 40));
+
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bg.png"))); // NOI18N
-        bg.setText("jLabel2");
         getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 570));
 
         pack();
@@ -121,6 +139,28 @@ public class Main extends javax.swing.JFrame {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnChargerPartieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChargerPartieActionPerformed
+        Partie partie = null;
+        try {
+            FileInputStream fichier = new FileInputStream("sauvegarde.bin");
+            ObjectInputStream entree = new ObjectInputStream(fichier);
+            partie = (Partie) entree.readObject();
+            entree.close();
+            fichier.close();
+            System.out.println("Partie chargée avec succès !");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (partie != null) {
+            PlateauFrame pf = new PlateauFrame(partie.getUser1(), partie.getUser2(), partie.getTotalTurns(), partie.getPlateauLogique());
+            
+            pf.setVisible(true);
+            this.setVisible(false);
+        }
+        
+    }//GEN-LAST:event_btnChargerPartieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,6 +199,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg;
+    private javax.swing.JButton btnChargerPartie;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnHelp;
     private javax.swing.JButton btnNewGame;

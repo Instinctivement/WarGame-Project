@@ -1,6 +1,8 @@
 package Model;
 
-public class Elfe extends Unite {
+import java.io.Serializable;
+
+public class Elfe extends Unite implements Serializable {
     private int id;
     private String name = "Elfe";
 

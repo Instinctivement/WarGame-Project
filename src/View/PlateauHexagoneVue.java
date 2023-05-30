@@ -16,10 +16,11 @@ import java.io.IOException;
 import java.io.File;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
+import java.io.Serializable;
 
 
 
-public class PlateauHexagoneVue extends JPanel implements ImageObserver {
+public class PlateauHexagoneVue extends JPanel implements ImageObserver, Serializable {
     private static final int RADIUS = 40;
     private static final int WIDTH = 12;
     private static final int HEIGHT = 11;

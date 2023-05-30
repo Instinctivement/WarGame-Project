@@ -1,7 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class HexagonPanel extends JPanel {
+public class HexagonPanel extends JPanel implements Serializable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
