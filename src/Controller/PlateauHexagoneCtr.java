@@ -193,7 +193,21 @@ public class PlateauHexagoneCtr {
                         unitLocations.remove(unitAtHexagone);
                         barresDeVie.remove(unitAtHexagone.getLifeBar());
                         dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a trépassé");
+                        selectedUnit.getUnit().setAEteDeplace();
+                        selectedUnit.getUnit().setNbDeplacement(movementRange);
+                        selectedUnit.getUnit().isAEteDeplace();
+                        unitLocations.remove(selectedUnit); // remove the old location from the list
+                        selectedUnit.setCenterX(centerX);
+                        selectedUnit.setCenterY(centerY);
+                        selectedUnit.setHexagone(h);
+                        unitLocations.add(selectedUnit); // add the updated location to the list
+                        barresDeVie.remove(selectedUnit.getLifeBar());// remove the old lifebar from the list
+                        selectedUnit.getLifeBar().setX(centerX-40);
+                        selectedUnit.getLifeBar().setY(centerY-60);
+                        selectedUnit.getLifeBar().setValeurActuelle(selectedUnit.getUnit().getNbPv());
+                        barresDeVie.add(selectedUnit.getLifeBar()); // add the updated bar to the list
                         }
+                        
                         else{
                         barresDeVie.remove(unitAtHexagone.getLifeBar());// remove the old lifebar from the list
                         unitAtHexagone.getLifeBar().setX(centerX-40);
