@@ -57,7 +57,7 @@ public class PlateauHexagoneCtr {
         this.unitLocations = unitLocations;
     }
 
-    private UnitWithLocation selectedUnit;
+    public UnitWithLocation selectedUnit;
     //private UnitWithLocation aimedUnit;
     private volatile Unite currentUnit;
 

@@ -117,6 +117,41 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver {
                             }
 
                             plateauLogique.Selectionner_bouger(unitAtHexagone, centerX, centerY, h);
+                            
+                            //highlight movable:
+                            
+                            if(plateauLogique.selectedUnit!=null){
+                                Unite unit = plateauLogique.selectedUnit.getUnit();
+                                int movementRange = unit.getNbDeplacement();
+
+                                // Parcourir tous les hexagones du plateau
+                                for (int t = 0; t < WIDTH; t++) {
+                                    for (int k = 0; k < HEIGHT; k++) {
+                                        Hexagonegraph hexagone = hexagones[t][k];
+
+                                        // Vérifier si l'hexagone est adjacent à l'unité sélectionnée
+                                        if (plateauLogique.isAdjacent(plateauLogique.selectedUnit.getHexagone(), hexagone)) {
+                                            // Vérifier si l'hexagone est libre ou occupé par une unité adverse non alliée
+                                            if (!plateauLogique.checkUnitInHexagone(hexagone) || !plateauLogique.checkUnitInHexagone2(hexagone, unit.getUserID())) {
+                                                // Vérifier si le coût du terrain est inférieur ou égal aux points de déplacement restants de l'unité
+                                                Terrain terrain2 = hexagone.getTerrain1();
+                                                if (terrain2.getCost() <= movementRange) {
+                                                    hexagone.setBorderColor(Color.GREEN);
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                for (int t = 0; t < WIDTH; t++) {
+                                    for (int k = 0; k < HEIGHT; k++) {
+                                        Hexagonegraph hexagone = hexagones[t][k];
+                                        hexagone.setBorderColor(Color.BLACK); // Changer la couleur de la bordure à la couleur par défaut (par exemple, noir)
+                                    }
+                                }
+                            }
 
                             repaint();  // Mettre à jour le dessin du plateau
                             plateauLogique.setCurrentUnit(null);
