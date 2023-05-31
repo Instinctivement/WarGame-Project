@@ -36,6 +36,8 @@ public class PlayersInfoFrame extends javax.swing.JFrame implements Serializable
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BEYOND THE RIVER");
+        setMinimumSize(new java.awt.Dimension(860, 570));
+        setPreferredSize(new java.awt.Dimension(860, 570));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -112,10 +114,17 @@ public class PlayersInfoFrame extends javax.swing.JFrame implements Serializable
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        if(txtUser1.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Merci de renseigner un pseudo pour le joueur1");
-        }else if(txtUser2.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Merci de renseigner un pseudo pour le joueur2");
+        // Vérifier si le champ est vide
+        if (txtUser1.getText().equals("") || txtUser2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci de renseigner un pseudo pour chaque joueur");
+        } 
+        // Vérifier la longueur du texte
+        else if (txtUser1.getText().length() > 8 || txtUser2.getText().length() > 8) {
+            JOptionPane.showMessageDialog(this, "Le pseudo doit contenir au maximum 8 caractères");
+        } 
+        // Vérifier les caractères autorisés
+        else if (!txtUser1.getText().matches("^[a-zA-Z0-9]+$") || !txtUser2.getText().matches("^[a-zA-Z0-9]+$")) {
+            JOptionPane.showMessageDialog(this, "Le pseudo ne doit contenir que des lettres et des chiffres");
         }else{
             User user1 = new User(1, txtUser1.getText());
             User user2 = new User(2, txtUser2.getText());

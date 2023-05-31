@@ -11,7 +11,7 @@ public class Hexagonegraph implements Serializable {
     private int y;
     private int radius;
     private Color borderColor = Color.BLACK;
-    private Color fillColor = new Color(255, 255, 255, 0);
+    public Color fillColor = new Color(255, 255, 255, 0);
     private Polygon p;
     private Terrain terrain;
     private int startX;
@@ -116,6 +116,10 @@ public class Hexagonegraph implements Serializable {
         return x == that.x
                 && y == that.y
                 && radius == that.radius;
+    }
+
+    public Color getBorderColor() {
+        return borderColor;
     }
 
 }

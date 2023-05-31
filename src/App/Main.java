@@ -1,7 +1,7 @@
 package App;
 
 import Controller.Partie;
-import View.HelpFrame;
+import View.HelpMenu;
 import View.PlateauFrame;
 import View.PlayersInfoFrame;
 import java.awt.Graphics;
@@ -131,7 +131,7 @@ public class Main extends javax.swing.JFrame implements Serializable {
     }//GEN-LAST:event_btnNewGameActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
-        HelpFrame hp = new HelpFrame();
+        HelpMenu hp = new HelpMenu();
         hp.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnHelpActionPerformed

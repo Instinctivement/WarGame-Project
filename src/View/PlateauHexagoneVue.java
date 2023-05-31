@@ -137,8 +137,10 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver, Seriali
                                                 // Vérifier si le coût du terrain est inférieur ou égal aux points de déplacement restants de l'unité
                                                 Terrain terrain2 = hexagone.getTerrain1();
                                                 if (terrain2.getCost() <= movementRange) {
+
                                                     hexagone.setBorderColor(Color.GREEN);
                                                 }
+                                                
 
                                             }
                                         }
@@ -149,10 +151,11 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver, Seriali
                                 for (int t = 0; t < WIDTH; t++) {
                                     for (int k = 0; k < HEIGHT; k++) {
                                         Hexagonegraph hexagone = hexagones[t][k];
-                                        hexagone.setBorderColor(Color.BLACK); // Changer la couleur de la bordure à la couleur par défaut (par exemple, noir)
+                                        hexagone.setBorderColor(Color.BLACK);
                                     }
                                 }
                             }
+                            
 
                             repaint();  // Mettre à jour le dessin du plateau
                             plateauLogique.setCurrentUnit(null);
@@ -163,12 +166,17 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver, Seriali
                                     // Get the last mouse location from the MouseInfo
                                     Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
                                     SwingUtilities.convertPointFromScreen(mouseLocation, getParent());
+                                    
 
-                                    if (h.getPolygon().contains(mouseLocation)) {//on verifie si la souris est toujours dans l'hexagone
-                                        h.setBorderColor(Color.YELLOW);//c'est du detail visuel
-                                    } else {
+                                    if (h.getPolygon().contains(mouseLocation)  ) {//on verifie si la souris est toujours dans l'hexagone
+                                        h.setBorderColor(Color.YELLOW);
+                                    }            
+                                   
+                                    else{
                                         h.setBorderColor(Color.BLACK);
+
                                     }
+                                    
 
                                     repaint();
                                 }
@@ -195,11 +203,18 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver, Seriali
                 for (int i = 0; i < WIDTH; i++) {
                     for (int j = 0; j < HEIGHT; j++) {
                         Hexagonegraph h = hexagones[i][j];
-                        if (h.getPolygon().contains(e.getPoint())) {
+                        if (h.getPolygon().contains(e.getPoint()) && !h.getBorderColor().equals(Color.GREEN)) {
                             h.setBorderColor(Color.YELLOW);
                             highlightedHexagone = h;
                             repaint();
                             return;
+                        }
+                        else if (h.getPolygon().contains(e.getPoint()) && h.getBorderColor().equals(Color.GREEN)){
+                            h.setBorderColor(Color.GREEN);
+                            
+                            repaint();
+                            return;
+   
                         }
                     }
                 }

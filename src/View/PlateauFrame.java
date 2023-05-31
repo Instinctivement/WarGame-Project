@@ -278,24 +278,20 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
 
     private void endGame() {
         // Logique pour terminer le jeu
-        EndGame endGameVue = new EndGame();
-        endGameVue.setPreferredSize(new Dimension(860, 580));
-        endGameVue.setResizable(false); 
-        endGameVue.jLabel1.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
-        endGameVue.jLabel1.setForeground(new java.awt.Color(255, 255, 0));
+        EndGameFrame endGameVue = new EndGameFrame();
 
         if (isDraw()) {
-            endGameVue.jLabel1.setText("Match Null !");
+            endGameVue.lbInformation.setText("Match Null !");
             endGameVue.setVisible(true);
             this.hide();
         } else {
             if (plateauLogique.endgame(user1.getId())) {
-                endGameVue.jLabel1.setText("Victoire du Joueur " + user1.getName());
+                endGameVue.lbInformation.setText("Victoire du Joueur " + user1.getName());
                 endGameVue.setVisible(true);
                 this.hide();
             }
             if (plateauLogique.endgame(user2.getId())) {
-                endGameVue.jLabel1.setText("Victoire du Joueur " + user2.getName());
+                endGameVue.lbInformation.setText("Victoire du Joueur " + user2.getName());
                 endGameVue.setVisible(true);
                 this.hide();
             }
@@ -311,9 +307,6 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
         } else {
             return false;
         }
-        // Logique pour vérifier s'il y a match nul
-        // Vérifier si les deux joueurs ont encore au moins une unité avec pv > 0
-        // À implémenter
     }
 
     /**
@@ -327,7 +320,7 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
 
         jPanel1 = new javax.swing.JPanel();
         btnSavePartie = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnHelp = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         lbTitle = new javax.swing.JLabel();
         lbUser1 = new javax.swing.JLabel();
@@ -361,10 +354,15 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Perpetua Titling MT", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 102, 102));
-        jButton2.setText("Consulter Aide");
+        btnHelp.setBackground(new java.awt.Color(255, 255, 255));
+        btnHelp.setFont(new java.awt.Font("Perpetua Titling MT", 0, 14)); // NOI18N
+        btnHelp.setForeground(new java.awt.Color(0, 102, 102));
+        btnHelp.setText("Consulter Aide");
+        btnHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHelpActionPerformed(evt);
+            }
+        });
 
         lbTitle.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -414,12 +412,12 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("/10");
 
-        lbInfoWhoIsTour.setFont(new java.awt.Font("Perpetua Titling MT", 0, 12)); // NOI18N
+        lbInfoWhoIsTour.setFont(new java.awt.Font("Perpetua Titling MT", 1, 12)); // NOI18N
         lbInfoWhoIsTour.setForeground(new java.awt.Color(255, 255, 255));
         lbInfoWhoIsTour.setText("Tour du joueur ;");
 
-        lbCurrentUser.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
-        lbCurrentUser.setForeground(new java.awt.Color(255, 255, 204));
+        lbCurrentUser.setFont(new java.awt.Font("Perpetua Titling MT", 1, 16)); // NOI18N
+        lbCurrentUser.setForeground(new java.awt.Color(51, 255, 51));
         lbCurrentUser.setText("User");
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 204));
@@ -480,7 +478,7 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
                                         .addComponent(jLabel2))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(lbInfoWhoIsTour)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGap(18, 18, 18)
                                         .addComponent(lbCurrentUser)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(21, 21, 21))
@@ -505,7 +503,7 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
                         .addGap(20, 20, 20))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnSavePartie, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
                         .addGap(41, 41, 41))))
         );
@@ -534,7 +532,7 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbInfoWhoIsTour)
                     .addComponent(lbCurrentUser))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lbInstruction)
@@ -545,7 +543,7 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
                 .addGap(32, 32, 32)
                 .addComponent(btnSavePartie, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
         );
 
@@ -593,16 +591,22 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
             sortie.writeObject(partie);
             sortie.close();
             fichier.close();
-            System.out.println("Partie sauvegardée avec succès !");
+            JOptionPane.showMessageDialog(this, "Partie sauvegardée avec succès !");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSavePartieActionPerformed
 
+    private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
+        HelpMenu hp = new HelpMenu();
+        hp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fermer uniquement la boîte de dialogue
+        hp.setVisible(true);
+    }//GEN-LAST:event_btnHelpActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHelp;
     private javax.swing.JButton btnSavePartie;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
