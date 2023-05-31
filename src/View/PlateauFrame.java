@@ -216,18 +216,6 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
             return;
         }
 
-        /*n=plateauLogique.endgame();
-       
-        if(n==1 || n==2){
-            EndGame nouv = new EndGame();
-            nouv.jLabel1.setText("Victoire du Joueur "+n);
-            nouv.jLabel1.setFont(new java.awt.Font("Impact", 0, 36)); // NOI18N
-            nouv.jLabel1.setForeground(new java.awt.Color(255, 255, 0));
-            nouv.setVisible(true);
-            this.hide();
-        }else if (n==0){
-            //le jeu continue 
-        }*/
         // Changer de joueur et incrémenter le nombre de tours
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
         plateauLogique.setCurrentPlayerId(currentPlayerId);

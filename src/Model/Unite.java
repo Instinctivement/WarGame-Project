@@ -17,6 +17,7 @@ public abstract class Unite implements Serializable {
     protected boolean aEteDeplace;
     public final int nbDeplacementMax;
     public final int nbPvMax;
+    private boolean recentAction;
 
     public Unite(int nbDeplacement, int nbAttaque, int nbDefense, int nbPv, int nbVision, double tauxRecuperation, User user, int nbDeplacementMax, int nbPvMax) {
         this.nbDeplacement = nbDeplacement;
@@ -114,9 +115,11 @@ public abstract class Unite implements Serializable {
     public boolean isAEteDeplace() {
         return aEteDeplace;
     }
-    public void setAEteDeplace(){
+
+    public void setAEteDeplace() {
         aEteDeplace = true;
     }
+
     public void setPASEteDeplace() {
         aEteDeplace = false;
     }
@@ -129,11 +132,19 @@ public abstract class Unite implements Serializable {
         aEteAttaquee = false;
     }
 
+    public boolean isRecentAction() {
+        return recentAction;
+    }
+
+    public void setRecentAction(boolean recentAction) {
+        this.recentAction = recentAction;
+    }
+
     public abstract void attaquer(Unite unite);
 
     public abstract void deplacer();
 
-   public void recuperer() {
+    public void recuperer() {
         // Logique spécifique à la récupération de l'archer
         int newpv = (int) (tauxRecuperation * nbPv / 100 + nbPv);
 
@@ -144,4 +155,3 @@ public abstract class Unite implements Serializable {
         //System.out.println("Nouveau pv de "+this.getName()+"est:"+newpv);
     }
 }
-    

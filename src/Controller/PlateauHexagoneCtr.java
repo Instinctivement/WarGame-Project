@@ -32,7 +32,6 @@ public class PlateauHexagoneCtr implements Serializable {
     public void setBarresDeVie(List<BarreDeVie> barresDeVie) {
         this.barresDeVie = barresDeVie;
     }
-    
 
     public DynamicLabel getDynamicLabel() {
         return dynamicLabel;
@@ -94,25 +93,26 @@ public class PlateauHexagoneCtr implements Serializable {
     public void ReinitialiserPointsDeplacement() {
         for (UnitWithLocation unite : unitLocations) {
             unite.getUnit().setNbDeplacement(unite.getUnit().nbDeplacementMax);
+            unite.getUnit().setRecentAction(false);
         }
     }
 
     public void RecupPV() {
         for (UnitWithLocation unite : unitLocations) {
-            if (unite.getUnit().isAEteAttaquee() == false && unite.getUnit().isAEteDeplace()==false) {
+            if (unite.getUnit().isAEteAttaquee() == false && unite.getUnit().isAEteDeplace() == false) {
                 unite.getUnit().recuperer();
                 barresDeVie.remove(unite.getLifeBar());// remove the old lifebar from the list
-                unite.getLifeBar().setX(unite.getCenterX()-40);
-                unite.getLifeBar().setY(unite.getCenterY()-60);
+                unite.getLifeBar().setX(unite.getCenterX() - 40);
+                unite.getLifeBar().setY(unite.getCenterY() - 60);
                 unite.getLifeBar().setValeurActuelle(unite.getUnit().getNbPv());
                 barresDeVie.add(unite.getLifeBar()); // add the updated bar to the list
             }
-            
+
         }
     }
-    
+
     public boolean endgame(int userId) {
-        
+
         boolean isIt = false;
         for (UnitWithLocation unite : unitLocations) {
             if (unite.getUnitId() == userId && unite.getUnit().getNbPv() > 0) {
@@ -126,6 +126,8 @@ public class PlateauHexagoneCtr implements Serializable {
     }
 
     public void Selectionner_bouger(UnitWithLocation unitAtHexagone, int centerX, int centerY, Hexagonegraph h) {
+        int nbrs_hexa = 0;
+        boolean peutAttaq = false;
         if (selectedUnit == null && unitAtHexagone != null) {
             // Select the unit at this hexagon
             selectedUnit = unitAtHexagone;
@@ -140,27 +142,32 @@ public class PlateauHexagoneCtr implements Serializable {
 
                 int movementRange = selectedUnit.getUnit().getNbDeplacement();
 
-                if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(), h) && movementRange >= terrain.getCost()) {
-                    // Move the selected unit to this hexagon
-                    movementRange = movementRange - terrain.getCost();
-                    dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + "il reste " + movementRange + " points de déplacements");
-                    System.out.println("il reste " + movementRange + " Déplacements");
-                    selectedUnit.getUnit().setAEteDeplace();
-                    selectedUnit.getUnit().setNbDeplacement(movementRange);
-                    selectedUnit.getUnit().isAEteDeplace();
-                    unitLocations.remove(selectedUnit); // remove the old location from the list
-                    selectedUnit.setCenterX(centerX);
-                    selectedUnit.setCenterY(centerY);
-                    selectedUnit.setHexagone(h);
-                    unitLocations.add(selectedUnit); // add the updated location to the list
-                    barresDeVie.remove(selectedUnit.getLifeBar());// remove the old lifebar from the list
-                    selectedUnit.getLifeBar().setX(centerX-40);
-                    selectedUnit.getLifeBar().setY(centerY-60);
-                    selectedUnit.getLifeBar().setValeurActuelle(selectedUnit.getUnit().getNbPv());
-                    barresDeVie.add(selectedUnit.getLifeBar()); // add the updated bar to the list
-
+                if (selectedUnit.getUnit().isRecentAction()) {
+                    selectedUnit = null;
+                    JOptionPane.showMessageDialog(null, "Après une attaque votre unité est immobilisée pour les reste du tour encours");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
+                    if (unitAtDestination == null && isAdjacent(selectedUnit.getHexagone(), h) && movementRange >= terrain.getCost()) {
+                        // Move the selected unit to this hexagon
+                        movementRange = movementRange - terrain.getCost();
+                        dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + "il reste " + movementRange + " points de déplacements");
+                        System.out.println("il reste " + movementRange + " Déplacements");
+                        selectedUnit.getUnit().setAEteDeplace();
+                        selectedUnit.getUnit().setNbDeplacement(movementRange);
+                        selectedUnit.getUnit().isAEteDeplace();
+                        unitLocations.remove(selectedUnit); // remove the old location from the list
+                        selectedUnit.setCenterX(centerX);
+                        selectedUnit.setCenterY(centerY);
+                        selectedUnit.setHexagone(h);
+                        unitLocations.add(selectedUnit); // add the updated location to the list
+                        barresDeVie.remove(selectedUnit.getLifeBar());// remove the old lifebar from the list
+                        selectedUnit.getLifeBar().setX(centerX - 40);
+                        selectedUnit.getLifeBar().setY(centerY - 60);
+                        selectedUnit.getLifeBar().setValeurActuelle(selectedUnit.getUnit().getNbPv());
+                        barresDeVie.add(selectedUnit.getLifeBar()); // add the updated bar to the list
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
+                    }
                 }
                 if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
                     selectedUnit = null;
@@ -176,55 +183,70 @@ public class PlateauHexagoneCtr implements Serializable {
                 Terrain terrain = h.getTerrain1();
                 UnitWithLocation unitAtDestination = Position_unite(h);
                 int movementRange = selectedUnit.getUnit().getNbDeplacement();
-
-                if (unitAtDestination != null && movementRange >= terrain.getCost()) {
+                if (selectedUnit.getUnit().isRecentAction()) {
+                    selectedUnit = null;
+                    JOptionPane.showMessageDialog(null, "Après une attaque votre unité est immobilisée pour les reste du tour encours");
+                } else {
                     if (selectedUnit.getUnitId() != unitAtHexagone.getUnitId()) {
-                        movementRange = movementRange - terrain.getCost();
-                        System.out.println("il reste " + movementRange + " Déplacements");
-                        selectedUnit.getUnit().setNbDeplacement(movementRange);
-
-                        selectedUnit.getUnit().attaquer(unitAtHexagone.getUnit());
-                        unitAtHexagone.getUnit().setAEteAttaquee();
-                        dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
-                        System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
-                        System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
-                        if (unitAtHexagone.getUnit().getNbPv() <= 0) {
-                        unitLocations.remove(unitAtHexagone);
-                        barresDeVie.remove(unitAtHexagone.getLifeBar());
-                        dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a trépassé");
-                        selectedUnit.getUnit().setAEteDeplace();
-                        selectedUnit.getUnit().setNbDeplacement(movementRange);
-                        selectedUnit.getUnit().isAEteDeplace();
-                        unitLocations.remove(selectedUnit); // remove the old location from the list
-                        selectedUnit.setCenterX(centerX);
-                        selectedUnit.setCenterY(centerY);
-                        selectedUnit.setHexagone(h);
-                        unitLocations.add(selectedUnit); // add the updated location to the list
-                        barresDeVie.remove(selectedUnit.getLifeBar());// remove the old lifebar from the list
-                        selectedUnit.getLifeBar().setX(centerX-40);
-                        selectedUnit.getLifeBar().setY(centerY-60);
-                        selectedUnit.getLifeBar().setValeurActuelle(selectedUnit.getUnit().getNbPv());
-                        barresDeVie.add(selectedUnit.getLifeBar()); // add the updated bar to the list
+                        if (selectedUnit.getUnit().getName() == "Archer" && movementRange >= countHexagonesBetween(selectedUnit.getHexagone(), unitAtHexagone.getHexagone())) {
+                            nbrs_hexa = countHexagonesBetween(selectedUnit.getHexagone(), unitAtHexagone.getHexagone());
+                            movementRange = movementRange - nbrs_hexa;
+                            System.out.println("il reste " + movementRange + " Déplacements");
+                            selectedUnit.getUnit().setNbDeplacement(movementRange);
+                            peutAttaq = true;
+                        } else if (unitAtDestination != null && movementRange >= terrain.getCost() && isAdjacent(selectedUnit.getHexagone(), unitAtHexagone.getHexagone())) {
+                            movementRange = movementRange - terrain.getCost();
+                            System.out.println("il reste " + movementRange + " Déplacements");
+                            selectedUnit.getUnit().setNbDeplacement(movementRange);
+                            peutAttaq = true;
+                        } else if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost() || selectedUnit.getUnit().getNbDeplacement() <= nbrs_hexa) {
+                            selectedUnit = null;
+                            JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
+                            peutAttaq = false;
+                        } else {
+                            System.out.println("Distanceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: " + countHexagonesBetween(selectedUnit.getHexagone(), unitAtHexagone.getHexagone()));
+                            JOptionPane.showMessageDialog(null, "Vous ne pouvez pas attaquer de cette distance");
+                            selectedUnit = null;
+                            peutAttaq = false;
                         }
-                        
-                        else{
-                        barresDeVie.remove(unitAtHexagone.getLifeBar());// remove the old lifebar from the list
-                        unitAtHexagone.getLifeBar().setX(centerX-40);
-                        unitAtHexagone.getLifeBar().setY(centerY-60);
-                        unitAtHexagone.getLifeBar().setValeurActuelle(unitAtHexagone.getUnit().getNbPv());
-                        barresDeVie.add(unitAtHexagone.getLifeBar()); // add the updated bar to the list
+                        if (peutAttaq == true) {
+                            selectedUnit.getUnit().setRecentAction(true);
+                            selectedUnit.getUnit().attaquer(unitAtHexagone.getUnit());
+                            unitAtHexagone.getUnit().setAEteAttaquee();
+                            dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
+                            System.out.println(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a attaqué " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId());
+                            System.out.println("Nb pv restant pour " + unitAtHexagone.getUnit().getName() + " de user " + unitAtHexagone.getUnitId() + " = " + unitAtHexagone.getUnit().getNbPv());
+                            if (unitAtHexagone.getUnit().getNbPv() <= 0) {
+                                unitLocations.remove(unitAtHexagone);
+                                barresDeVie.remove(unitAtHexagone.getLifeBar());
+                                dynamicLabel.setText(selectedUnit.getUnit().getName() + " de user " + selectedUnit.getUnitId() + " a trépassé");
+                                selectedUnit.getUnit().setAEteDeplace();
+                                selectedUnit.getUnit().setNbDeplacement(movementRange);
+                                selectedUnit.getUnit().isAEteDeplace();
+                                unitLocations.remove(selectedUnit); // remove the old location from the list
+                                selectedUnit.setCenterX(centerX);
+                                selectedUnit.setCenterY(centerY);
+                                selectedUnit.setHexagone(h);
+                                unitLocations.add(selectedUnit); // add the updated location to the list
+                                barresDeVie.remove(selectedUnit.getLifeBar());// remove the old lifebar from the list
+                                selectedUnit.getLifeBar().setX(centerX - 40);
+                                selectedUnit.getLifeBar().setY(centerY - 60);
+                                selectedUnit.getLifeBar().setValeurActuelle(selectedUnit.getUnit().getNbPv());
+                                barresDeVie.add(selectedUnit.getLifeBar()); // add the updated bar to the list
+                            } else {
+                                barresDeVie.remove(unitAtHexagone.getLifeBar());// remove the old lifebar from the list
+                                unitAtHexagone.getLifeBar().setX(centerX - 40);
+                                unitAtHexagone.getLifeBar().setY(centerY - 60);
+                                unitAtHexagone.getLifeBar().setValeurActuelle(unitAtHexagone.getUnit().getNbPv());
+                                barresDeVie.add(unitAtHexagone.getLifeBar()); // add the updated bar to the list
+                            }
+                            selectedUnit.getUnit().setNbDeplacement(0);
+                            selectedUnit = null;
                         }
-                        selectedUnit.getUnit().setNbDeplacement(0);
-                        selectedUnit = null;
-
-                    } else if (selectedUnit.getUnitId() == unitAtHexagone.getUnitId()) {
+                    } else {
                         selectedUnit = null;
                         JOptionPane.showMessageDialog(null, "Vous ne pouvez pas attaquer un allié");
                     }
-
-                } else if (selectedUnit.getUnit().getNbDeplacement() <= terrain.getCost()) {
-                    selectedUnit = null;
-                    JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
                 }
 
             } else {
@@ -242,6 +264,20 @@ public class PlateauHexagoneCtr implements Serializable {
         // Ici, j'assume que la distance entre les centres de deux hexagones adjacents est égale au diamètre d'un hexagone, c'est-à-dire 2 * radius.
         // Vous devrez peut-être ajuster cette valeur en fonction de la façon dont vous avez défini vos hexagones.
         return distance <= 2 * RADIUS;
+    }
+
+    public int countHexagonesBetween(Hexagonegraph from, Hexagonegraph to) {
+        int dx = from.getCenterX() - to.getCenterX();
+        int dy = from.getCenterY() - to.getCenterY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Ici, j'assume que la distance entre les centres de deux hexagones adjacents est égale au diamètre d'un hexagone, c'est-à-dire 2 * radius.
+        // Vous devrez peut-être ajuster cette valeur en fonction de la façon dont vous avez défini vos hexagones.
+        double hexagonDiameter = 2 * RADIUS;
+        double hexagonesBetween = distance / hexagonDiameter;
+        int nbhexagones = (int) Math.ceil(hexagonesBetween);
+
+        return nbhexagones;
     }
 
     public boolean checkUnitInHexagone(Hexagonegraph hexagone) {
