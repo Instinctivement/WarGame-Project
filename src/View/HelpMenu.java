@@ -1,8 +1,16 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package View;
 
 import App.Main;
+import javax.swing.ImageIcon;
 
-
+/**
+ *
+ * @author franc
+ */
 public class HelpMenu extends javax.swing.JFrame {
 
     /**
@@ -34,6 +42,8 @@ public class HelpMenu extends javax.swing.JFrame {
 
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnBack5 = new javax.swing.JButton();
         nextPage5 = new javax.swing.JButton();
@@ -61,6 +71,10 @@ public class HelpMenu extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
         btnBack8 = new javax.swing.JButton();
         nextPage8 = new javax.swing.JButton();
         prec8 = new javax.swing.JButton();
@@ -107,12 +121,22 @@ public class HelpMenu extends javax.swing.JFrame {
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/commencer.gif"))); // NOI18N
-        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 600, 450));
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 600, 410));
+
+        jLabel30.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel30.setText("Ou chargez une partie sauvegardée");
+        jPanel5.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 530, -1, -1));
+
+        jLabel29.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel29.setText("Commencez une nouvelle partie");
+        jPanel5.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 500, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Maintenant allons apprendre à jouer ! ");
-        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, -1));
+        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, -1, -1));
 
         btnBack5.setBackground(new java.awt.Color(0, 153, 153));
         btnBack5.setFont(new java.awt.Font("Perpetua Titling MT", 0, 12)); // NOI18N
@@ -305,12 +329,32 @@ public class HelpMenu extends javax.swing.JFrame {
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/deplacer.gif"))); // NOI18N
-        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 600, 400));
+        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 620, 360));
 
         jLabel13.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("Déplacez vos unités tant que vous avez des points de déplacements");
-        jPanel8.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, -1, -1));
+        jLabel13.setText("Quand le joueur2 fini on passe au tour suivant");
+        jPanel8.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
+
+        jLabel28.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel28.setText("Pas de soucis! Sauvegardez votre partie et revenez la charger à tout moment");
+        jPanel8.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, -1, -1));
+
+        jLabel25.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel25.setText("Déplacez vos unités tant que vous avez des points de déplacements");
+        jPanel8.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
+
+        jLabel21.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel21.setText("Passer la main quand vous avez fini");
+        jPanel8.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, -1, -1));
+
+        jLabel20.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setText("Vous voulez prendre une pause ?");
+        jPanel8.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, -1, -1));
 
         btnBack8.setBackground(new java.awt.Color(0, 153, 153));
         btnBack8.setFont(new java.awt.Font("Perpetua Titling MT", 0, 12)); // NOI18N
@@ -406,7 +450,7 @@ public class HelpMenu extends javax.swing.JFrame {
         jPanel7.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/placer.gif"))); // NOI18N
-        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 620, 380));
+        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 620, 380));
 
         btnBack7.setBackground(new java.awt.Color(0, 153, 153));
         btnBack7.setFont(new java.awt.Font("Perpetua Titling MT", 0, 12)); // NOI18N
@@ -449,7 +493,7 @@ public class HelpMenu extends javax.swing.JFrame {
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/attaquer.gif"))); // NOI18N
-        jPanel9.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 570, 460));
+        jPanel9.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 590, 480));
 
         jLabel12.setFont(new java.awt.Font("Traditional Arabic", 0, 22)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -815,6 +859,14 @@ public class HelpMenu extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         
         //</editor-fold>
         //</editor-fold>
@@ -851,12 +903,18 @@ public class HelpMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

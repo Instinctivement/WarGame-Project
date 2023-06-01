@@ -49,7 +49,7 @@ public class PlayersInfoFrame extends javax.swing.JFrame implements Serializable
 
         jbInstructions.setFont(new java.awt.Font("Perpetua Titling MT", 0, 14)); // NOI18N
         jbInstructions.setForeground(new java.awt.Color(255, 255, 255));
-        jbInstructions.setText("Entrez les speudos des jouers :");
+        jbInstructions.setText("Entrez les pseudos des jouers :");
         getContentPane().add(jbInstructions, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 190, -1, 28));
 
         lbUser1.setFont(new java.awt.Font("Perpetua Titling MT", 0, 12)); // NOI18N

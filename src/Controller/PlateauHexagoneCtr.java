@@ -24,7 +24,7 @@ public class PlateauHexagoneCtr implements Serializable {
 
     private List<UnitWithLocation> unitLocations = new ArrayList<>();
     private List<BarreDeVie> barresDeVie = new ArrayList<>();
-
+    
     public List<BarreDeVie> getBarresDeVie() {
         return barresDeVie;
     }
@@ -204,7 +204,7 @@ public class PlateauHexagoneCtr implements Serializable {
                             JOptionPane.showMessageDialog(null, "Vous n'avez plus assez de points de déplacement");
                             peutAttaq = false;
                         } else {
-                            System.out.println("Distanceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: " + countHexagonesBetween(selectedUnit.getHexagone(), unitAtHexagone.getHexagone()));
+                            System.out.println("Distanceee: " + countHexagonesBetween(selectedUnit.getHexagone(), unitAtHexagone.getHexagone()));
                             JOptionPane.showMessageDialog(null, "Vous ne pouvez pas attaquer de cette distance");
                             selectedUnit = null;
                             peutAttaq = false;

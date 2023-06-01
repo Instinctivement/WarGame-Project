@@ -67,6 +67,17 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
         plateauLogique.setCurrentPlayerId(ph.getCurrentPlayerId());
         plateauLogique.setDynamicLabel(dynamicLabel);
         
+        lbInstruction.setText("Informations sur la partie");
+        panelUnite.removeAll();
+        panelUnite.revalidate();
+        panelUnite.setPreferredSize(new Dimension(300, 50));
+        panelUnite.revalidate();
+        panelUnite.repaint();
+        panelUnite.add(dynamicLabel, BorderLayout.CENTER);
+        unitsPlaced();
+        
+        updateUI();
+        
         initParam();
     }
 
@@ -225,15 +236,7 @@ public class PlateauFrame extends javax.swing.JFrame implements Serializable {
         plateauLogique.ReinitialiserPointsDeplacement();
         totalTurns++;
         turnPassed = false;
-
-        // Vérifier si les deux joueurs ont joué leur tour
-        /*if (currentPlayerId == 1) {
-            turnsCompleted++;
-            if (turnsCompleted == 2) {
-                turnsCompleted = 0;
-                totalTurns++;
-            }
-        }*/
+        
         // Mettre à jour l'interface utilisateur (si nécessaire)
         updateUI();
     }

@@ -122,6 +122,8 @@ public class PlateauHexagoneVue extends JPanel implements ImageObserver, Seriali
                             //highlight movable:
                             
                             if(plateauLogique.selectedUnit!=null){
+                                
+                                plateauLogique.getDynamicLabel().setText("Nbre de pts de dépacement : " + plateauLogique.selectedUnit.getUnit().getNbDeplacement());
                                 Unite unit = plateauLogique.selectedUnit.getUnit();
                                 int movementRange = unit.getNbDeplacement();
 
